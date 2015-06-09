@@ -1,0 +1,38 @@
+;; Object storm/
+;; SEMANTICDB Tags save file
+(semanticdb-project-database-file "storm/"
+  :tables
+  (list
+
+
+
+
+
+
+    (semanticdb-table "stormnimbus.json"
+      :major-mode 'js-mode
+      :tags nil
+      :file "stormnimbus.json"
+      :pointmax 347
+      :fsize 346
+      :lastmodtime '(21860 24662 185925 615000)
+      :unmatched-syntax nil)
+    (semanticdb-table "stormsupervisor.json"
+      :major-mode 'js-mode
+      :tags nil
+      :file "stormsupervisor.json"
+      :pointmax 352
+      :fsize 351
+      :lastmodtime '(21860 24762 891426 268000)
+      :unmatched-syntax nil)
+    (semanticdb-table "stormui.json"
+      :major-mode 'js-mode
+      :tags nil
+      :file "stormui.json"
+      :pointmax 339
+      :fsize 338
+      :lastmodtime '(21860 24812 48158 453000)
+      :unmatched-syntax nil))
+  :file "!home!zenika!stage_corbin!ansible!git!mesos!zenux!etc!marathon!storm!semantic.cache"
+  :semantic-tag-version "2.0"
+  :semanticdb-version "2.2")

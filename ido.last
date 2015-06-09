@@ -1,0 +1,39 @@
+;;; -*- coding: utf-8 -*-
+
+;; ----- ido-last-directory-list -----
+(
+ ("/home/mathieu/Prog/clojure/euler/src/" . "euler/")
+ ("/home/mathieu/Prog/clojure/euler/" . "src/")
+ ("/home/mathieu/Prog/clojure/" . "euler/")
+ ("/home/mathieu/Prog/" . "clojure/")
+)
+
+;; ----- ido-work-directory-list -----
+(
+ "/home/mathieu/"
+ "/home/mathieu/Prog/clojure/euler/src/euler/"
+)
+
+;; ----- ido-work-file-list -----
+(
+ ".emacs"
+ "core.clj"
+)
+
+;; ----- ido-dir-file-cache -----
+(
+ ("/home/mathieu/" (21859 15405 963910 191000) ".steampid" ".bashrc" "fontconfig/" ".dbus/" ".fontconfig/" ".gnome2_private/" ".cache/" ".config/" "typescript" ".local/" ".gksu.lock" "./" ".xsession-errors.old" "Public/" "Images/" ".gtk-bookmarks" ".visualvm/" ".mission-control/" ".gstreamer-0.10/" "Modèles/" ".w3m/" ".pulse/" ".steampath" ".gnome/" ".bash_history" ".mozilla/" ".gconf/" ".netbeans/" ".gnupg/" ".nbprofiler/" ".bash_logout" ".ssh/" "Prog/" ".nbi/" ".octave_hist" ".wicd/" ".Skype/" ".thumbnails/" ".viminfo" "../" ".java/" "workspace/" ".pulse-cookie" ".emacs" "Téléchargements/" ".pki/" ".emacs.d/" ".kde/" "Musique/" ".xsession-errors" ".gimp-2.8/" ".ICEauthority" ".steam/" "Bureau/" ".xscreensaver" ".lein/" "Vidéos/" "Enregistrements/" ".gnome2/" ".profile" ".gitconfig" "Documents/" ".m2/" ".gvfs/" ".emacs~" ".gnash/")
+
+ ("/home/mathieu/Prog/clojure/euler/src/euler/" (21855 41294 967648 325000) "core.clj" "#core.clj#" "./" "../")
+
+ ("/home/mathieu/Prog/clojure/euler/src/" (21773 63687 876118 818000) "./" "euler/" "../" "metaheuristique/")
+
+ ("/home/mathieu/Prog/clojure/euler/" (21773 63971 392111 387000) "doc/" ".git/" "bin/" "src/" "./" "test/" "resources/" "target/" ".project" "../" ".classpath" "LICENSE" "project.clj" ".gitignore" "README.md" ".hgignore")
+
+ ("/home/mathieu/Prog/clojure/" (21773 35207 484865 371000) "./" "euler/" "clojuresort/" "../" "metaheuristique/")
+
+ ("/home/mathieu/Prog/" (21803 63257 106550 217000) "./" "Livres/" "tests/" "reactive/" "java/" "../" "clojure/")
+)
+
+;; ----- ido-unc-hosts-cache -----
+t

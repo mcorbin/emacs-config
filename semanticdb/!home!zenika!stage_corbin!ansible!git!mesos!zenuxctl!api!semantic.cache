@@ -1,0 +1,54 @@
+;; Object api/
+;; SEMANTICDB Tags save file
+(semanticdb-project-database-file "api/"
+  :tables
+  (list
+    (semanticdb-table "app.py"
+      :major-mode 'python-mode
+      :tags 
+        '( ("flask" include nil nil [1 33])
+            ("requests" include nil nil [34 49])
+            ("json" include nil nil [50 61])
+            ("os" include nil nil [62 84])
+            ("os.path" include nil nil [85 126])
+            ("app" variable nil nil [128 149])
+            ("NBVOTANTS" variable nil nil [150 163])
+            ("VOTANTS" variable nil nil [164 176])
+            ("MASTER" variable nil nil [178 244])
+            ("IMAGES" variable nil nil [245 256])
+            ("" code nil nil [268 273])
+            ("hello" function nil nil [274 333])
+            ("getDirectories" function nil nil [335 527])
+            ("" code nil nil [538 556])
+            ("getRunningApplications" function nil nil [557 761])
+            ("" code nil nil [773 796])
+            ("getRunningApplicationsById" function (:arguments 
+              ( ("id" variable nil (reparse-symbol function_parameters) [828 830]))              ) nil [797 1086])
+            ("" code nil nil [1102 1116])
+            ("getLocalApplications" function nil nil [1117 1197])
+            ("" code nil nil [1209 1228])
+            ("getLocalApplicationById" function (:arguments 
+              ( ("id" variable nil (reparse-symbol function_parameters) [1257 1259]))              ) nil [1229 1644])
+            ("" code nil nil [1656 1672])
+            ("getCluster" function nil nil [1673 1709])
+            ("read_json" function (:arguments 
+              ( ("filepath" variable nil (reparse-symbol function_parameters) [1730 1738]))              ) nil [1716 1842])
+            ("" code nil nil [1854 1870])
+            ("static_proxy" function (:arguments 
+              ( ("path" variable nil (reparse-symbol function_parameters) [1888 1892]))              ) nil [1871 1933])
+            ("get_voters_name" function (:arguments 
+              ( ("votants" variable nil (reparse-symbol function_parameters) [1955 1962])
+                ("cookie" variable nil (reparse-symbol function_parameters) [1964 1970]))              ) nil [1935 2243])
+            ("" code nil nil [2255 2271])
+            ("votants" function nil nil [2272 2318])
+            ("" code nil nil [2330 2343])
+            ("vote" function nil nil [2344 3041])
+            ("if" code nil nil [3043 3094]))          
+      :file "app.py"
+      :pointmax 3094
+      :fsize 3093
+      :lastmodtime '(21860 35481 708913 382000)
+      :unmatched-syntax nil))
+  :file "!home!zenika!stage_corbin!ansible!git!mesos!zenuxctl!api!semantic.cache"
+  :semantic-tag-version "2.0"
+  :semanticdb-version "2.2")

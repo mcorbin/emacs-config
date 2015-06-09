@@ -1,0 +1,40 @@
+;; Object controllers/
+;; SEMANTICDB Tags save file
+(semanticdb-project-database-file "controllers/"
+  :tables
+  (list
+    (semanticdb-table "localAppConfigurationController.js"
+      :major-mode 'js-mode
+      :tags nil
+      :file "localAppConfigurationController.js"
+      :pointmax 801
+      :fsize 800
+      :lastmodtime '(21860 29742 6437 767000)
+      :unmatched-syntax '((VARIABLE 101 . 132) (PAREN_BLOCK 143 . 799) (PAREN_BLOCK 53 . 98) (VARIABLE 101 . 132) (PAREN_BLOCK 143 . 797) (PAREN_BLOCK 53 . 98) (VARIABLE 101 . 132) (PAREN_BLOCK 143 . 799) (PAREN_BLOCK 53 . 98) (VARIABLE 101 . 132) (PAREN_BLOCK 143 . 798) (PAREN_BLOCK 53 . 98) (VARIABLE 101 . 132) (PAREN_BLOCK 143 . 777) (PAREN_BLOCK 53 . 98) (VARIABLE 101 . 132) (PAREN_BLOCK 143 . 765) (PAREN_BLOCK 53 . 98) (VARIABLE 101 . 132) (PAREN_BLOCK 143 . 756) (PAREN_BLOCK 53 . 98) (VARIABLE 101 . 132) (PAREN_BLOCK 143 . 739) (PAREN_BLOCK 53 . 98) (VARIABLE 101 . 132) (PAREN_BLOCK 143 . 737) (PAREN_BLOCK 53 . 98)))
+    (semanticdb-table "clusterController.js"
+      :major-mode 'js-mode
+      :tags nil
+      :file "clusterController.js"
+      :pointmax 918
+      :fsize 858
+      :lastmodtime '(21853 62947 97133 348000)
+      :unmatched-syntax '((VARIABLE 74 . 91) (PAREN_BLOCK 102 . 916) (PAREN_BLOCK 40 . 71) (VARIABLE 74 . 91) (PAREN_BLOCK 102 . 857) (PAREN_BLOCK 40 . 71)))
+    (semanticdb-table "storeController.js"
+      :major-mode 'js-mode
+      :tags nil
+      :file "storeController.js"
+      :pointmax 283
+      :fsize 282
+      :lastmodtime '(21854 61548 534682 681000)
+      :unmatched-syntax '((VARIABLE 69 . 84) (PAREN_BLOCK 95 . 281) (PAREN_BLOCK 37 . 66)))
+    (semanticdb-table "remoteAppController.js"
+      :major-mode 'js-mode
+      :tags nil
+      :file "remoteAppController.js"
+      :pointmax 755
+      :fsize 754
+      :lastmodtime '(21860 33498 755242 115000)
+      :unmatched-syntax '((VARIABLE 78 . 97) (PAREN_BLOCK 108 . 753) (PAREN_BLOCK 42 . 75) (VARIABLE 78 . 97) (PAREN_BLOCK 108 . 674) (PAREN_BLOCK 42 . 75) (VARIABLE 78 . 97) (PAREN_BLOCK 108 . 662) (PAREN_BLOCK 42 . 75))))
+  :file "!home!zenika!stage_corbin!ansible!git!mesos!zenuxctl!api!static!resources!js!controllers!semantic.cache"
+  :semantic-tag-version "2.0"
+  :semanticdb-version "2.2")

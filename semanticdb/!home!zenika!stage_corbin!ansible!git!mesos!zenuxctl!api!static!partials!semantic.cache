@@ -1,0 +1,52 @@
+;; Object partials/
+;; SEMANTICDB Tags save file
+(semanticdb-project-database-file "partials/"
+  :tables
+  (list
+    (semanticdb-table "launchedApplications.html"
+      :major-mode 'html-mode
+      :tags 
+        '( ("My applications" section (:members 
+              ( ("{{app.id}}" anchor nil nil [366 369]))              ) nil [52 520]))          
+      :file "launchedApplications.html"
+      :pointmax 520
+      :fsize 519
+      :lastmodtime '(21860 32914 94382 774000)
+      :unmatched-syntax nil)
+    (semanticdb-table "configureLocalApplication.html"
+      :major-mode 'html-mode
+      :tags 
+        '( ("function codeAddress() {
+            alert('ok');
+        }
+        window.onload = codeAddress;b" section (:members 
+              ( ("{{file.id}}" section nil nil [248 438]))              ) nil [2 438]))          
+      :file "configureLocalApplication.html"
+      :pointmax 438
+      :fsize 436
+      :lastmodtime '(21860 35156 432086 982000)
+      :unmatched-syntax nil)
+    (semanticdb-table "store.html"
+      :major-mode 'html-mode
+      :tags 
+        '( ("Zenux Store" section (:members 
+              ( ("{{app}}" anchor nil nil [401 404]))              ) nil [60 555]))          
+      :file "store.html"
+      :pointmax 555
+      :fsize 554
+      :lastmodtime '(21860 30520 938079 982000)
+      :unmatched-syntax nil)
+    (semanticdb-table "remoteApplications.html"
+      :major-mode 'html-mode
+      :tags 
+        '( ("{{app.name}}" section (:members 
+              ( ("Infos" section nil nil [289 604])
+                ("Tasks" section nil nil [604 984]))              ) nil [154 984]))          
+      :file "remoteApplications.html"
+      :pointmax 984
+      :fsize 983
+      :lastmodtime '(21860 34809 362930 748000)
+      :unmatched-syntax nil))
+  :file "!home!zenika!stage_corbin!ansible!git!mesos!zenuxctl!api!static!partials!semantic.cache"
+  :semantic-tag-version "2.0"
+  :semanticdb-version "2.2")
