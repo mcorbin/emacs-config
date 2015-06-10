@@ -1,1 +1,0 @@
-("~/Prog/rust/metaheuristique/" "~/Prog/clojure/clojuresort/" "~/Prog/rust/guessing_game/" "~/Prog/clojure/euler/" "~/Prog/clojure/metaheuristique/")
