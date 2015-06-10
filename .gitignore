@@ -1,10 +1,9 @@
 *
 
-!elpa
-!emacs-eclim
-!lisp
+!emacs-eclim/
+!lisp/
 !neotree
-!themes
+!themes/
 !emacs.org
 !init.el
 !.gitignore
