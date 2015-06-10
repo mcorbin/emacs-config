@@ -1,8 +1,8 @@
 *
 
-!emacs-eclim/
-!lisp/setup-package.el
-!themes/*
+!/emacs-eclim/
+!/lisp/setup-package.el
+!/themes/
 !emacs.org
 !init.el
 !.gitignore
