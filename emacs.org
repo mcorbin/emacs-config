@@ -232,20 +232,23 @@ It looks kinda like that (click to open the real one) :
 
    #+begin_src emacs-lisp
 
+     (use-package nyan-mode
+       :ensure t
+       :config
+       (progn
+         (nyan-mode)
+         (nyan-start-animation)))
+     (add-to-list 'load-path "~/.emacs.d/neotree")
+     (require 'neotree)
+     (require 'nyan-mode)
 
-(add-to-list 'load-path "~/.emacs.d/neotree")
-(require 'neotree)
-(require 'nyan-mode)
-(nyan-mode)
-(nyan-start-animation)
+     (global-set-key [f8] 'neotree-toggle)
 
-(global-set-key [f8] 'neotree-toggle)
-
-     (menu-bar-mode -1)
-     (tool-bar-mode -1)
-     (scroll-bar-mode -1)
-     (blink-cursor-mode -1)
-     (setq inhibit-splash-screen t)
+          (menu-bar-mode -1)
+          (tool-bar-mode -1)
+          (scroll-bar-mode -1)
+          (blink-cursor-mode -1)
+          (setq inhibit-splash-screen t)
    #+end_src
 
    We want to see somewhere the column and line number, and also highlight the
@@ -1006,8 +1009,8 @@ Let's also rewrite some built-in to better /default/. Let's start with
           (define-key vde/toggle-map "c" #'highlight-indentation-current-column-mode))
         :config
         (progn
-          (set-face-background 'highlight-indentation-face "#e3e3d3")
-          (set-face-background 'highlight-indentation-current-column-face "#c3b3b3")))
+          (set-face-background 'highlight-indentation-face "#003308")
+          (set-face-background 'highlight-indentation-current-column-face "#003308")))
     #+END_SRC
 
 
@@ -1369,19 +1372,11 @@ Let's also rewrite some built-in to better /default/. Let's start with
 ** Auto-complete
 
    #+BEGIN_QUOTE
-   Auto-Complete is an intelligent auto-completion extension for
-   Emacs. It extends the standard Emacs completion interface and
-   provides an environment that allows users to concentrate more on
-   their own work.
+   company mode
    #+END_QUOTE
-
-   Install and use a basic configuration for auto-complete and setup defaults.
 
    #+BEGIN_SRC emacs-lisp
 
-;; regular auto-complete initialization
-   (require 'auto-complete-config)
-   (ac-config-default)
    (require 'company)
 
    #+END_SRC
@@ -2579,8 +2574,7 @@ Let's also rewrite some built-in to better /default/. Let's start with
    #+BEGIN_SRC emacs-lisp
      ;; FIXME handle this with provided configuration
      (defvar mode-line-cleaner-alist
-       `((auto-complete-mode         . " α")
-         (yas-minor-mode             . " γ")
+       `((yas-minor-mode             . " γ")
          (paredit-mode               . " Φ")
          (eldoc-mode                 . "")
          (abbrev-mode                . "")
@@ -2718,33 +2712,33 @@ Let's also rewrite some built-in to better /default/. Let's start with
 
    #+BEGIN_SRC emacs-lisp
 
-   (add-to-list 'load-path "~/.emacs.d/emacs-eclim/")
-   (require 'eclim)
-   (global-eclim-mode)
-   (require 'eclimd)
+     (add-to-list 'load-path "~/.emacs.d/emacs-eclim/")
+     (require 'eclim)
+     (global-eclim-mode)
+     (require 'eclimd)
 
 
-(setq help-at-pt-display-when-idle t)
-(setq help-at-pt-timer-delay 0.1)
-(help-at-pt-set-timer)
+     (setq help-at-pt-display-when-idle t)
+     (setq help-at-pt-timer-delay 0.1)
+     (help-at-pt-set-timer)
 
 
-(custom-set-variables
-  '(eclim-eclipse-dirs '("~/stage_corbin/eclipse"))
-  '(eclim-executable "~/stage_corbin/eclipse/eclim"))
+     (custom-set-variables
+      '(eclim-eclipse-dirs '("~/stage_corbin/eclipse"))
+      '(eclim-executable "~/stage_corbin/eclipse/eclim"))
 
-(require 'company-emacs-eclim)
-;; add the emacs-eclim source
-(require 'ac-emacs-eclim-source)
-(ac-emacs-eclim-config)
+     (require 'company-emacs-eclim)
+     ;; add the emacs-eclim source
+     ;; (require 'ac-emacs-eclim-source)
+     ;;(ac-emacs-eclim-config)
 
 
-(company-emacs-eclim-setup)
-(global-company-mode t)
+     (company-emacs-eclim-setup)
+     (global-company-mode t)
 
-(setq help-at-pt-display-when-idle t)
-(setq help-at-pt-timer-delay 0.1)
-(help-at-pt-set-timer)
+     (setq help-at-pt-display-when-idle t)
+     (setq help-at-pt-timer-delay 0.1)
+     (help-at-pt-set-timer)
 
    #+END_SRC
 
