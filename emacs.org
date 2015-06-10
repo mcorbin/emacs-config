@@ -223,7 +223,6 @@ It looks kinda like that (click to open the real one) :
      github-personal-folder (expand-file-name github-username github-general-folder))
   #+END_SRC
 
-
 * General configuration 🐸
 ** Appearance
 
@@ -238,7 +237,13 @@ It looks kinda like that (click to open the real one) :
        (progn
          (nyan-mode)
          (nyan-start-animation)))
-     (add-to-list 'load-path "~/.emacs.d/neotree")
+
+     (use-package neotree
+       :ensure t
+       :config
+       (progn
+         (nyan-mode)))
+     
      (require 'neotree)
      (require 'nyan-mode)
 
@@ -1363,7 +1368,8 @@ Let's also rewrite some built-in to better /default/. Let's start with
    #+END_QUOTE
 
    #+BEGIN_SRC emacs-lisp
-
+   (use-package company
+       :ensure t)
    (require 'company)
 
    #+END_SRC
@@ -2728,6 +2734,25 @@ Let's also rewrite some built-in to better /default/. Let's start with
      (help-at-pt-set-timer)
 
    #+END_SRC
+
+** TODO RUST
+
+#+BEGIN_SRC emacs-lisp
+
+   (use-package rust-mode
+       :ensure t)
+
+   (add-to-list 'load-path "/home/mathieu/Prog/rustc/src/")
+   (autoload 'rust-mode "rust-mode" nil t)
+   (add-to-list 'auto-mode-alist '("\\.rs\\'" . rust-mode))
+
+
+   (setq racer-rust-src-path "/home/mathieu/Prog/rustc/src/")
+   (setq racer-cmd "~/.emacs.d/racer/target/release/racer")
+   (add-to-list 'load-path "~/.emacs.d/racer/editors/emacs")
+   (eval-after-load "rust-mode" '(require 'racer))
+
+#+END_SRC
 
 * Irc
 
