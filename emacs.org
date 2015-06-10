@@ -618,19 +618,6 @@ Let's also rewrite some built-in to better /default/. Let's start with
 #+END_SRC
 
 
-*** pretty-mode
-
-    Pretty mode turn some stuff prettier, for example in Haskell =/== becomes =≠=, or
-    =->= becomes =→=.
-
-    #+BEGIN_SRC emacs-lisp
-      (use-package pretty-mode
-                   :ensure t
-                   :init
-                   (add-hook 'prog-mode-hook
-                             'turn-on-pretty-mode))
-    #+END_SRC
-
 *** raindow-identifiers
 
     I read an intersting article about [[https://medium.com/p/3a6db2743a1e/][how to make syntax highlighting more useful]]
