@@ -1,8 +1,7 @@
 *
-
-!/emacs-eclim/
+!*/
 !/lisp/setup-package.el
-!/themes/
+!/themes/spolsky-theme.el
 !emacs.org
 !init.el
 !.gitignore
