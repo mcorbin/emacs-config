@@ -1257,7 +1257,7 @@ Let's also rewrite some built-in to better /default/. Let's start with
                                            :hint nil)
          "
      ^Mark^ ^Unmark^ ^Actions^ ^Search
-     ^^^^^^^^----------------------------------------------------------------- (__)
+     ^^^^^^^^__----------------------------------------------------------------- (__)
      _m_: mark _u_: unmark _x_: execute _R_: re-isearch (oo)
      _s_: save _U_: unmark up _b_: bury _I_: isearch /------\\/
      _d_: delete ^ ^ _g_: refresh _O_: multi-occur / | ||
