@@ -36,23 +36,6 @@ It looks kinda like that (click to open the real one) :
 
 * How to use my configuration 🚀
 
-  You can obtain the source by cloning this repository somewhere, but the repository
-  is made to work with [[https://github.com/RichiH/vcsh][vcsh]].
-
-  #+BEGIN_SRC sh
- vcsh clone git://github.com/vdemeester/emacs-config emacs-config
-  #+END_SRC
-
-  If you don't want to use =vcsh= but still want to have my =.emacs.d= folder
-  in your =$HOME=, you could link it like that :
-
-  #+BEGIN_SRC sh
- $ cd $HOME
- $ mkdir -p src
- $ git clone git://github.com/vdemeester/emacs-config src/vde-emacs-config
- $ ln -s src/vde-emacs-config/.emacs.d .
-  #+END_SRC
-
 ** The =init.el=
 
    If you just want to get the =emacs.org= file, you will have to define and setup
@@ -184,7 +167,7 @@ It looks kinda like that (click to open the real one) :
      sites-folder (substitute-env-in-file-name "$HOME/src/sites/")
      ;; Github related
      github-general-folder (substitute-env-in-file-name "$HOME/src/github")
-     github-username "vdemeester")
+     github-username "mcorbin")
   #+END_SRC
 
   Loads user settings if the file is available. I put all my personal modifications or sensitive information into this file.
@@ -231,7 +214,7 @@ It looks kinda like that (click to open the real one) :
    the splash-screen.
 
    #+begin_src emacs-lisp
-
+     (load-library "ox-reveal")
      (use-package nyan-mode
        :ensure t
        :config
@@ -1365,6 +1348,7 @@ Let's also rewrite some built-in to better /default/. Let's start with
    #+BEGIN_SRC emacs-lisp
 
    (require 'company)
+   (global-company-mode t)
 
    #+END_SRC
 
@@ -1394,10 +1378,6 @@ Let's also rewrite some built-in to better /default/. Let's start with
 *** Git
 
     #+begin_src emacs-lisp
-      (use-package git-commit-mode
-        :ensure t)
-      (use-package git-rebase-mode
-        :ensure t)
       (use-package gitignore-mode
         :ensure t)
       (use-package gitconfig-mode
@@ -1423,8 +1403,6 @@ Let's also rewrite some built-in to better /default/. Let's start with
       exists, let's do it :).
 
       #+begin_src emacs-lisp
-        (use-package magit-svn
-          :ensure t)
       #+end_src
 
       The /quick key/ to get the ~magit-svn~ menu is ~N~.
@@ -2543,8 +2521,6 @@ Let's also rewrite some built-in to better /default/. Let's start with
        (progn
          (setq yas-verbosity 1
                yas-snippet-dir (expand-file-name "snippets" user-emacs-directory))
-         (define-key yas-minor-mode-map (kbd "<tab>") nil)
-         (define-key yas-minor-mode-map (kbd "TAB") nil)
          (define-key yas-minor-mode-map (kbd "<C-tab>") 'yas-expand)
          (yas-global-mode 1)))
      (use-package helm-c-yasnippet
@@ -2713,22 +2689,46 @@ Let's also rewrite some built-in to better /default/. Let's start with
      (custom-set-variables
       '(eclim-eclipse-dirs '("~/stage_corbin/eclipse"))
       '(eclim-executable "~/stage_corbin/eclipse/eclim"))
-
-     (require 'company-emacs-eclim)
-     ;; add the emacs-eclim source
-     ;; (require 'ac-emacs-eclim-source)
-     ;;(ac-emacs-eclim-config)
-
-
-     (company-emacs-eclim-setup)
-     (global-company-mode t)
+     (setq eclimd-default-workspace "~/workspace")
 
      (setq help-at-pt-display-when-idle t)
      (setq help-at-pt-timer-delay 0.1)
      (help-at-pt-set-timer)
 
+     (require 'company-emacs-eclim)
+     (company-emacs-eclim-setup)
+
+      (defun java-mode-keys ()
+       "Modify keymaps used by `java-mode'."
+       (local-set-key (kbd "C-<tab>") 'company-emacs-eclim))
+
+    (add-hook 'java-mode-hook 'java-mode-keys)
    #+END_SRC
 
+** Scala
+   #+BEGIN_SRC emacs-lisp
+
+     ;;(require 'package)
+     ;;(add-to-list 'package-archives
+     ;;            '("melpa" . "http://melpa.milkbox.net/packages/") t)
+     ;;(package-initialize)
+
+     ;;(when (not package-archive-contents)
+      ;; (package-refresh-contents))
+
+     ;; Restart emacs and do `M-x package-install [RETURN] ensime [RETURN]`
+     ;; To keep up-to-date, do `M-x list-packages [RETURN] U x [RETURN]`
+
+     ;; If necessary, make sure "sbt" and "scala" are in the PATH environment
+     ;; (setenv "PATH" (concat "/path/to/sbt/bin:" (getenv "PATH")))
+     ;; (setenv "PATH" (concat "/path/to/scala/bin:" (getenv "PATH")))
+     ;;
+     ;; On Macs, it might be a safer bet to use exec-path instead of PATH, for instance: 
+     ;; (setq exec-path (append exec-path '("/usr/local/bin")))
+
+     (require 'ensime)
+     (add-hook 'scala-mode-hook 'ensime-scala-mode-hook)
+   #+END_SRC
 * Irc
 
   Why not putting all the thing in Emacs =:). IRC is one of them and
