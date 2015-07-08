@@ -1614,7 +1614,7 @@ Let's also rewrite some built-in to better /default/. Let's start with
      Let's also define the default /todo-keywords/ and the workflow
      between them.
 
-- =TODO= : task not started yet, part of the backlog :)
+- =TODO= : task not started yet, part of the backlog
 - =PROGRESS= : task that are currently in progress, should be a minimum
 - =BLOCKED= : task that I start working on but cannot anymore (for
   some reason), thus they are blocked
