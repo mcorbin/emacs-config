@@ -1255,15 +1255,6 @@ Let's also rewrite some built-in to better /default/. Let's start with
        ;; Buffer menu
        (defhydra hydra-buffer-menu (:color pink
                                            :hint nil)
-         "
-     ^Mark^ ^Unmark^ ^Actions^ ^Search
-     ^^^^^^^^__----------------------------------------------------------------- (__)
-     _m_: mark _u_: unmark _x_: execute _R_: re-isearch (oo)
-     _s_: save _U_: unmark up _b_: bury _I_: isearch /------\\/
-     _d_: delete ^ ^ _g_: refresh _O_: multi-occur / | ||
-     _D_: delete up ^ ^ _T_: files only: % -28`Buffer-menu-files-only^^ * /\\---/\\
-     _~_: modified ^ ^ ^ ^ ^^ ~~ ~~
-     "
          ("m" Buffer-menu-mark)
          ("u" Buffer-menu-unmark)
          ("U" Buffer-menu-backup-unmark)
