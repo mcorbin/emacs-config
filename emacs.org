@@ -10,6 +10,7 @@
                                                                      |_____|
 #+end_src
 
+Inspired by vdemeester emacs configuration : https://github.com/vdemeester/emacs-config
 This is my first attempt to create a readable, maintainable and self
 documented emacs configuration. I'm hopeful that using Org-Babel and a
 literate programming style will help.
@@ -36,22 +37,6 @@ It looks kinda like that (click to open the real one) :
 
 * How to use my configuration 🚀
 
-  You can obtain the source by cloning this repository somewhere, but the repository
-  is made to work with [[https://github.com/RichiH/vcsh][vcsh]].
-
-  #+BEGIN_SRC sh
- vcsh clone git://github.com/vdemeester/emacs-config emacs-config
-  #+END_SRC
-
-  If you don't want to use =vcsh= but still want to have my =.emacs.d= folder
-  in your =$HOME=, you could link it like that :
-
-  #+BEGIN_SRC sh
- $ cd $HOME
- $ mkdir -p src
- $ git clone git://github.com/vdemeester/emacs-config src/vde-emacs-config
- $ ln -s src/vde-emacs-config/.emacs.d .
-  #+END_SRC
 
 ** The =init.el=
 
@@ -184,7 +169,7 @@ It looks kinda like that (click to open the real one) :
      sites-folder (substitute-env-in-file-name "$HOME/src/sites/")
      ;; Github related
      github-general-folder (substitute-env-in-file-name "$HOME/src/github")
-     github-username "vdemeester")
+     github-username "mcorbin")
   #+END_SRC
 
   Loads user settings if the file is available. I put all my personal modifications or sensitive information into this file.
@@ -230,11 +215,9 @@ It looks kinda like that (click to open the real one) :
    the splash-screen.
 
    #+begin_src emacs-lisp
-<<<<<<< HEAD
-     ;; (load-library "ox-reveal")
-=======
 
->>>>>>> 9d62134a9a3491d5ff30d9234cec3d5552a6c051
+     ;; (load-library "ox-reveal")
+
      (use-package nyan-mode
        :ensure t
        :config
@@ -1349,11 +1332,7 @@ Let's also rewrite some built-in to better /default/. Let's start with
    #+END_QUOTE
 
    #+BEGIN_SRC emacs-lisp
-<<<<<<< HEAD
-    (use-package company
-=======
    (use-package company
->>>>>>> 9d62134a9a3491d5ff30d9234cec3d5552a6c051
        :ensure t)
    (require 'company)
 
@@ -1385,15 +1364,9 @@ Let's also rewrite some built-in to better /default/. Let's start with
 *** Git
 
     #+begin_src emacs-lisp
-      (use-package git-commit-mode
-        :ensure t)
-      (use-package git-rebase-mode
-        :ensure t)
       (use-package gitignore-mode
         :ensure t)
       (use-package gitconfig-mode
-        :ensure t)
-      (use-package gitattributes-mode
         :ensure t)
     #+end_src
 
@@ -2724,27 +2697,20 @@ Let's also rewrite some built-in to better /default/. Let's start with
 
 #+BEGIN_SRC emacs-lisp
 
-   (use-package rust-mode
-       :ensure t)
+;;   (use-package rust-mode
+;;     :ensure t)
 
-   (add-to-list 'load-path "/home/mathieu/Prog/rustc/src/")
-   (autoload 'rust-mode "rust-mode" nil t)
-   (add-to-list 'auto-mode-alist '("\\.rs\\'" . rust-mode))
+;;   (add-to-list 'load-path "/home/mathieu/Prog/rustc/src/")
+;;   (autoload 'rust-mode "rust-mode" nil t)
+;;   (add-to-list 'auto-mode-alist '("\\.rs\\'" . rust-mode))
 
 
-   (setq racer-rust-src-path "/home/mathieu/Prog/rustc/src/")
-   (setq racer-cmd "~/.emacs.d/racer/target/release/racer")
-   (add-to-list 'load-path "~/.emacs.d/racer/editors/emacs")
-   (eval-after-load "rust-mode" '(require 'racer))
+;;   (setq racer-rust-src-path "/home/mathieu/Prog/rustc/src/")
+;;   (setq racer-cmd "~/.emacs.d/racer/target/release/racer")
+;;   (add-to-list 'load-path "~/.emacs.d/racer/editors/emacs")
+;;   (eval-after-load "rust-mode" '(require 'racer))
 
 #+END_SRC
-
-<<<<<<< HEAD
-     ;;(require 'ensime)
-     ;;(add-hook 'scala-mode-hook 'ensime-scala-mode-hook)
-   #+END_SRC
-=======
->>>>>>> 9d62134a9a3491d5ff30d9234cec3d5552a6c051
 * Irc
 
   Why not putting all the thing in Emacs =:). IRC is one of them and
