@@ -36,6 +36,23 @@ It looks kinda like that (click to open the real one) :
 
 * How to use my configuration 🚀
 
+  You can obtain the source by cloning this repository somewhere, but the repository
+  is made to work with [[https://github.com/RichiH/vcsh][vcsh]].
+
+  #+BEGIN_SRC sh
+ vcsh clone git://github.com/vdemeester/emacs-config emacs-config
+  #+END_SRC
+
+  If you don't want to use =vcsh= but still want to have my =.emacs.d= folder
+  in your =$HOME=, you could link it like that :
+
+  #+BEGIN_SRC sh
+ $ cd $HOME
+ $ mkdir -p src
+ $ git clone git://github.com/vdemeester/emacs-config src/vde-emacs-config
+ $ ln -s src/vde-emacs-config/.emacs.d .
+  #+END_SRC
+
 ** The =init.el=
 
    If you just want to get the =emacs.org= file, you will have to define and setup
@@ -167,7 +184,7 @@ It looks kinda like that (click to open the real one) :
      sites-folder (substitute-env-in-file-name "$HOME/src/sites/")
      ;; Github related
      github-general-folder (substitute-env-in-file-name "$HOME/src/github")
-     github-username "mcorbin")
+     github-username "vdemeester")
   #+END_SRC
 
   Loads user settings if the file is available. I put all my personal modifications or sensitive information into this file.
@@ -213,14 +230,24 @@ It looks kinda like that (click to open the real one) :
    the splash-screen.
 
    #+begin_src emacs-lisp
+<<<<<<< HEAD
      ;; (load-library "ox-reveal")
+=======
+
+>>>>>>> 9d62134a9a3491d5ff30d9234cec3d5552a6c051
      (use-package nyan-mode
        :ensure t
        :config
        (progn
          (nyan-mode)
          (nyan-start-animation)))
-     (add-to-list 'load-path "~/.emacs.d/neotree")
+
+     (use-package neotree
+       :ensure t
+       :config
+       (progn
+         (nyan-mode)))
+     
      (require 'neotree)
      (require 'nyan-mode)
 
@@ -1276,11 +1303,6 @@ Let's also rewrite some built-in to better /default/. Let's start with
        ;; apropos
        (defhydra hydra-apropos (:color blue
                                        :hint nil)
-         "
-     _a_propos _c_ommand
-     _d_ocumentation _l_ibrary
-     _v_ariable _u_ser-option
-     ^ ^ valu_e_"
          ("a" apropos)
          ("d" apropos-documentation)
          ("v" apropos-variable)
@@ -1293,15 +1315,6 @@ Let's also rewrite some built-in to better /default/. Let's start with
        (global-set-key
         (kbd "C-M-o")
         (defhydra hydra-window (:color amaranth)
-          "
-     Move Point^^^^   Move Splitter   ^Ace^                       ^Split^
-     --------------------------------------------------------------------------------
-     _w_, _<up>_      Shift + Move    _C-a_: ace-window           _2_: split-window-below
-     _a_, _<left>_                    _C-s_: ace-window-swap      _3_: split-window-right
-     _s_, _<down>_                    _C-d_: ace-window-delete    ^ ^
-     _d_, _<right>_                   ^   ^                       ^ ^
-     You can use arrow-keys or WASD.
-     "
           ("2" split-window-below nil)
           ("3" split-window-right nil)
           ("a" windmove-left nil)
@@ -1336,10 +1349,13 @@ Let's also rewrite some built-in to better /default/. Let's start with
    #+END_QUOTE
 
    #+BEGIN_SRC emacs-lisp
+<<<<<<< HEAD
     (use-package company
+=======
+   (use-package company
+>>>>>>> 9d62134a9a3491d5ff30d9234cec3d5552a6c051
        :ensure t)
    (require 'company)
-   (global-company-mode t)
 
    #+END_SRC
 
@@ -1369,6 +1385,10 @@ Let's also rewrite some built-in to better /default/. Let's start with
 *** Git
 
     #+begin_src emacs-lisp
+      (use-package git-commit-mode
+        :ensure t)
+      (use-package git-rebase-mode
+        :ensure t)
       (use-package gitignore-mode
         :ensure t)
       (use-package gitconfig-mode
@@ -1394,6 +1414,8 @@ Let's also rewrite some built-in to better /default/. Let's start with
       exists, let's do it :).
 
       #+begin_src emacs-lisp
+        (use-package magit-svn
+          :ensure t)
       #+end_src
 
       The /quick key/ to get the ~magit-svn~ menu is ~N~.
@@ -1600,7 +1622,7 @@ Let's also rewrite some built-in to better /default/. Let's start with
      Let's also define the default /todo-keywords/ and the workflow
      between them.
 
-- =TODO= : task not started yet, part of the backlog :)
+- =TODO= : task not started yet, part of the backlog
 - =PROGRESS= : task that are currently in progress, should be a minimum
 - =BLOCKED= : task that I start working on but cannot anymore (for
   some reason), thus they are blocked
@@ -2512,6 +2534,8 @@ Let's also rewrite some built-in to better /default/. Let's start with
        (progn
          (setq yas-verbosity 1
                yas-snippet-dir (expand-file-name "snippets" user-emacs-directory))
+         (define-key yas-minor-mode-map (kbd "<tab>") nil)
+         (define-key yas-minor-mode-map (kbd "TAB") nil)
          (define-key yas-minor-mode-map (kbd "<C-tab>") 'yas-expand)
          (yas-global-mode 1)))
      (use-package helm-c-yasnippet
@@ -2680,46 +2704,47 @@ Let's also rewrite some built-in to better /default/. Let's start with
      (custom-set-variables
       '(eclim-eclipse-dirs '("~/stage_corbin/eclipse"))
       '(eclim-executable "~/stage_corbin/eclipse/eclim"))
-     (setq eclimd-default-workspace "~/workspace")
+
+     (require 'company-emacs-eclim)
+     ;; add the emacs-eclim source
+     ;; (require 'ac-emacs-eclim-source)
+     ;;(ac-emacs-eclim-config)
+
+
+     (company-emacs-eclim-setup)
+     (global-company-mode t)
 
      (setq help-at-pt-display-when-idle t)
      (setq help-at-pt-timer-delay 0.1)
      (help-at-pt-set-timer)
 
-     (require 'company-emacs-eclim)
-     (company-emacs-eclim-setup)
-
-      (defun java-mode-keys ()
-       "Modify keymaps used by `java-mode'."
-       (local-set-key (kbd "C-<tab>") 'company-emacs-eclim))
-
-    (add-hook 'java-mode-hook 'java-mode-keys)
    #+END_SRC
 
-** Scala
-   #+BEGIN_SRC emacs-lisp
+** TODO RUST
 
-     ;;(require 'package)
-     ;;(add-to-list 'package-archives
-     ;;            '("melpa" . "http://melpa.milkbox.net/packages/") t)
-     ;;(package-initialize)
+#+BEGIN_SRC emacs-lisp
 
-     ;;(when (not package-archive-contents)
-      ;; (package-refresh-contents))
+   (use-package rust-mode
+       :ensure t)
 
-     ;; Restart emacs and do `M-x package-install [RETURN] ensime [RETURN]`
-     ;; To keep up-to-date, do `M-x list-packages [RETURN] U x [RETURN]`
+   (add-to-list 'load-path "/home/mathieu/Prog/rustc/src/")
+   (autoload 'rust-mode "rust-mode" nil t)
+   (add-to-list 'auto-mode-alist '("\\.rs\\'" . rust-mode))
 
-     ;; If necessary, make sure "sbt" and "scala" are in the PATH environment
-     ;; (setenv "PATH" (concat "/path/to/sbt/bin:" (getenv "PATH")))
-     ;; (setenv "PATH" (concat "/path/to/scala/bin:" (getenv "PATH")))
-     ;;
-     ;; On Macs, it might be a safer bet to use exec-path instead of PATH, for instance: 
-     ;; (setq exec-path (append exec-path '("/usr/local/bin")))
 
+   (setq racer-rust-src-path "/home/mathieu/Prog/rustc/src/")
+   (setq racer-cmd "~/.emacs.d/racer/target/release/racer")
+   (add-to-list 'load-path "~/.emacs.d/racer/editors/emacs")
+   (eval-after-load "rust-mode" '(require 'racer))
+
+#+END_SRC
+
+<<<<<<< HEAD
      ;;(require 'ensime)
      ;;(add-hook 'scala-mode-hook 'ensime-scala-mode-hook)
    #+END_SRC
+=======
+>>>>>>> 9d62134a9a3491d5ff30d9234cec3d5552a6c051
 * Irc
 
   Why not putting all the thing in Emacs =:). IRC is one of them and
