@@ -206,7 +206,6 @@ It looks kinda like that (click to open the real one) :
      github-personal-folder (expand-file-name github-username github-general-folder))
   #+END_SRC
 
-
 * General configuration 🐸
 ** Appearance
 
@@ -214,7 +213,7 @@ It looks kinda like that (click to open the real one) :
    the splash-screen.
 
    #+begin_src emacs-lisp
-     (load-library "ox-reveal")
+     ;; (load-library "ox-reveal")
      (use-package nyan-mode
        :ensure t
        :config
@@ -1337,7 +1336,8 @@ Let's also rewrite some built-in to better /default/. Let's start with
    #+END_QUOTE
 
    #+BEGIN_SRC emacs-lisp
-
+    (use-package company
+       :ensure t)
    (require 'company)
    (global-company-mode t)
 
@@ -2717,8 +2717,8 @@ Let's also rewrite some built-in to better /default/. Let's start with
      ;; On Macs, it might be a safer bet to use exec-path instead of PATH, for instance: 
      ;; (setq exec-path (append exec-path '("/usr/local/bin")))
 
-     (require 'ensime)
-     (add-hook 'scala-mode-hook 'ensime-scala-mode-hook)
+     ;;(require 'ensime)
+     ;;(add-hook 'scala-mode-hook 'ensime-scala-mode-hook)
    #+END_SRC
 * Irc
 
