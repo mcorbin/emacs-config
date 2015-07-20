@@ -71,7 +71,7 @@ It looks kinda like that (click to open the real one) :
      sites-folder (substitute-env-in-file-name "$HOME/src/sites/")
      ;; Github related
      github-general-folder (substitute-env-in-file-name "$HOME/src/github")
-     github-username "vdemeester")
+     github-username "mcorbin")
   #+END_SRC
 
   Loads user settings if the file is available. I put all my personal modifications or sensitive information into this file.
