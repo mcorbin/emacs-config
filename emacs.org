@@ -10,6 +10,8 @@
                                                                      |_____|
 #+end_src
 
+Thx to vdemeester (https://github.com/vdemeester/emacs-config) !
+
 This is my first attempt to create a readable, maintainable and self
 documented emacs configuration. I'm hopeful that using Org-Babel and a
 literate programming style will help.
@@ -33,121 +35,6 @@ available at my [[https://github.com/vdemeester/emacs-config][emacs-config]] git
 It looks kinda like that (click to open the real one) :
 
 [[./.emacs.d/images/emacs-config.png][./.emacs.d/images/emacs-config-small.png]]
-
-* How to use my configuration 🚀
-
-  You can obtain the source by cloning this repository somewhere, but the repository
-  is made to work with [[https://github.com/RichiH/vcsh][vcsh]].
-
-  #+BEGIN_SRC sh
- vcsh clone git://github.com/vdemeester/emacs-config emacs-config
-  #+END_SRC
-
-  If you don't want to use =vcsh= but still want to have my =.emacs.d= folder
-  in your =$HOME=, you could link it like that :
-
-  #+BEGIN_SRC sh
- $ cd $HOME
- $ mkdir -p src
- $ git clone git://github.com/vdemeester/emacs-config src/vde-emacs-config
- $ ln -s src/vde-emacs-config/.emacs.d .
-  #+END_SRC
-
-** The =init.el=
-
-   If you just want to get the =emacs.org= file, you will have to define and setup
-   some stuff for this file to work with org-babel. You could take a look to my
-   [[https://github.com/vdemeester/emacs-config/blob/master/.emacs.d/init.el][init.el]] file but let's show the main stuff.
-
-   First you will need to setup packages repository and define a =require-package=
-   function, let's see what's in there (defined in =lisp/setup-package.el=).
-
-
-   #+BEGIN_SRC emacs-lisp :tangle no
-     (require 'package)
-
-     ;; add org to package repos
-     (add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/"))
-
-     ;; add melpa and melpa-stable to package repos
-     (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/"))
-     (add-to-list 'package-archives '("mela-stable" . "http://stable.melpa.org/packages/"))
-
-     ;; If gpg cannot be found, signature checking will fail, so we
-     ;; conditionally enable it according whether gpg is available.
-     ;; We re-run this check once $PATH has been configured
-     (defun sanityinc/package-maybe-enable-signatures ()
-       (setq package-check-signature (when (executable-find "gpg") 'allow-unsigned)))
-
-     (sanityinc/package-maybe-enable-signatures)
-
-     ;; Fire up package.el
-     (package-initialize)
-
-     ;; Load package contents if not present
-     (when (not package-archive-contents)
-       (package-refresh-contents))
-
-     ;; Load use-package
-     (require 'use-package)
-
-     (provide 'setup-package)
-   #+END_SRC
-
-   Let's now see how I load the =emacs.org= file. In the following lines of code,
-   I'm also ensuring that a recent version of [[http://orgmode.org/][org-mode]] is present on the system ;
-   if not, I'm unload the current one, installing a recent one and load it.
-
-   #+BEGIN_SRC emacs-lisp :tangle no
-     ;; Support for Emacs 24 and higher only
-     (let ((minver 24))
-       (unless (>= emacs-major-version minver)
-         (error "Your Emacs is too old -- this config requires v%s or higher" minver)))
-
-     ;; Keep track of loading time
-     (defconst emacs-start-time (current-time))
-
-     ;; Add custom lisp files to the load-path
-     (add-to-list 'load-path "~/.emacs.d/lisp")
-     ;; Add a specific version of use-package
-     (add-to-list 'load-path "~/.emacs.d/lisp/use-package")
-
-     (require 'vde-functions)
-     ;; initialize all ELPA packages
-     (require 'setup-package)
-
-     ;; (setq package-enable-at-startup nil)
-     (let ((elapsed (float-time (time-subtract (current-time)
-                                                emacs-start-time))))
-       (message "Loaded packages in %.3fs" elapsed))
-
-     ;; Make sure we have a decent and recent org-mode version
-     (require 'org)
-     (when (string-match "^[1234567]" (org-version))
-       (progn
-         (warn "Org-mode is out of date. We expect org 8 or higher, but instead we have %s" (org-version))
-         (warn "Force the installation from org elpa.")
-         (package-install 'org)
-         (unload-org-mode)
-         (require 'org)
-         ))
-
-     ;; keep customize settings in their own file
-     (setq custom-file
-           (expand-file-name "custom.el"
-                             user-emacs-directory))
-     (when (file-exists-p custom-file)
-       (load custom-file))
-
-     ;; load the literate configuration
-     (require 'ob-tangle)
-
-     (org-babel-load-file "~/.emacs.d/emacs.org")
-
-     (let ((elapsed (float-time (time-subtract (current-time)
-                                                emacs-start-time))))
-       (message "Loaded settings...done in %.3fs" elapsed))
-   #+END_SRC
 
 * Personal information 👨
 
