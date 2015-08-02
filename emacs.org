@@ -1,6 +1,6 @@
 #+TITLE: Mathieu Corbin emacs configuration
 #+AUTHOR: Mathieu Corbin
-#+EMAIL: Mathieu [at] Corbin [dot] fr
+#+EMAIL: contact [at] mathieu-corbin [dot] fr
 
 #+begin_src
                                                               ___ __
@@ -40,7 +40,7 @@ It looks kinda like that (click to open the real one) :
 
   #+begin_src emacs-lisp
     (setq user-full-name "Mathieu Corbin"
-          user-mail-address "corbin.math@gmail.com")
+          user-mail-address "contact@mathieu-corbin.fr")
   #+end_src
 
   Let's define default value that could be owerwritten by the host
@@ -1264,10 +1264,10 @@ Let's also rewrite some built-in to better /default/. Let's start with
 *** Git
 
     #+begin_src emacs-lisp
-      (use-package git-commit-mode
-        :ensure t)
-      (use-package git-rebase-mode
-        :ensure t)
+      ;;(use-package git-commit-mode
+      ;;  :ensure t)
+      ;;(use-package git-rebase-mode
+      ;;  :ensure t)
       (use-package gitignore-mode
         :ensure t)
       (use-package gitconfig-mode
@@ -2599,25 +2599,6 @@ Let's also rewrite some built-in to better /default/. Let's start with
 
    #+END_SRC
 
-** TODO RUST
-
-#+BEGIN_SRC emacs-lisp
-
-   (use-package rust-mode
-       :ensure t)
-
-   (add-to-list 'load-path "/home/mathieu/Prog/rustc/src/")
-   (autoload 'rust-mode "rust-mode" nil t)
-   (add-to-list 'auto-mode-alist '("\\.rs\\'" . rust-mode))
-
-
-   (setq racer-rust-src-path "/home/mathieu/Prog/rustc/src/")
-   (setq racer-cmd "~/.emacs.d/racer/target/release/racer")
-   (add-to-list 'load-path "~/.emacs.d/racer/editors/emacs")
-   (eval-after-load "rust-mode" '(require 'racer))
-
-#+END_SRC
-
 ** TODO LATEX
 
 #+BEGIN_SRC emacs-lisp
@@ -2653,7 +2634,3 @@ Let's also rewrite some built-in to better /default/. Let's start with
   #+END_SRC
 
 * Mails ✉
-
-  #+BEGIN_SRC emacs-lisp
-   (autoload 'wl "wl" "Wanderlust" t)
-  #+END_SRC
