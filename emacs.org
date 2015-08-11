@@ -2310,16 +2310,6 @@ Let's also rewrite some built-in to better /default/. Let's start with
                  (toggle-truncate-lines t)))
 #+END_SRC
 
-** Linux related modes
-*** Archlinux
-    I'm using [[http://archlinux.org][Archlinux]] on my personnal computers and I maintain a few packages
-    on [[https://aur.archlinux.org][aur]], hopefully there is a mode for that.
-
-    #+BEGIN_SRC emacs-lisp
-      (use-package pkgbuild-mode
-        :ensure t)
-    #+END_SRC
-
 ** Markdown, Yaml & Toml
 
    #+BEGIN_SRC emacs-lisp
@@ -2554,7 +2544,7 @@ Let's also rewrite some built-in to better /default/. Let's start with
 ** TODO BASH
 #+BEGIN_SRC emacs-lisp
 #+END_SRC
-** TODO PYTHON
+** PYTHON
 #+BEGIN_SRC emacs-lisp
 
 (use-package elpy
@@ -2572,41 +2562,7 @@ Let's also rewrite some built-in to better /default/. Let's start with
 
 #+END_SRC
 
-** TODO JAVA
-
-   #+BEGIN_SRC emacs-lisp
-
-     (add-to-list 'load-path "~/.emacs.d/emacs-eclim/")
-     (require 'eclim)
-     (global-eclim-mode)
-     (require 'eclimd)
-
-
-     (setq help-at-pt-display-when-idle t)
-     (setq help-at-pt-timer-delay 0.1)
-     (help-at-pt-set-timer)
-
-
-     (custom-set-variables
-      '(eclim-eclipse-dirs '("~/stage_corbin/eclipse"))
-      '(eclim-executable "~/stage_corbin/eclipse/eclim"))
-
-     (require 'company-emacs-eclim)
-     ;; add the emacs-eclim source
-     ;; (require 'ac-emacs-eclim-source)
-     ;;(ac-emacs-eclim-config)
-
-
-     (company-emacs-eclim-setup)
-     (global-company-mode t)
-
-     (setq help-at-pt-display-when-idle t)
-     (setq help-at-pt-timer-delay 0.1)
-     (help-at-pt-set-timer)
-
-   #+END_SRC
-
-** TODO LATEX
+** LATEX
 
 #+BEGIN_SRC emacs-lisp
 
@@ -2623,6 +2579,21 @@ Let's also rewrite some built-in to better /default/. Let's start with
   ;; (setq reftex-plug-into-AUCTeX t)
 
 #+END_SRC
+
+** Ocaml
+   (use-package tuareg
+   :ensure t)
+
+   (autoload 'tuareg-mode "tuareg" "Major mode for editing Caml code" t)
+   (autoload 'camldebug "camldebug" "Run the Caml debugger" t)
+   (autoload 'tuareg-imenu-set-imenu "tuareg-imenu" 
+   "Configuration of imenu for tuareg" t) 
+   (add-hook 'tuareg-mode-hook 'tuareg-imenu-set-imenu)
+
+   (setq auto-mode-alist 
+        (append '(("\\.ml[ily]?$" . tuareg-mode)
+	          ("\\.topml$" . tuareg-mode))
+                  auto-mode-alist))
 
 * Irc
 
@@ -2641,55 +2612,3 @@ Let's also rewrite some built-in to better /default/. Let's start with
   #+END_SRC
 
 * Mails ✉
-
-  Don't load if not on a computer where there is mails.
-
-  #+BEGIN_SRC emacs-lisp
-    (defvar load-mail-setup (file-exists-p "~/desktop/mails/main"))
-    (when load-mail-setup
-  #+END_SRC
-
-
-  #+BEGIN_SRC emacs-lisp
-    (add-to-list 'load-path "/usr/local/share/emacs/site-lisp/mu4e")
-    (require-maybe 'mu4e)
-    (require-maybe 'helm-mu)
-  #+END_SRC
-
-  Let's /detect/ if mu is installed as mu-git or mu. It's a
-  workaround I need to use because of the name conflict between mu
-  and the mails-utils mu command.
-
-  #+BEGIN_SRC emacs-lisp
-    ;; (setq mu4e-mu-binary "/usr/local/bin/mu")
-  #+END_SRC
-
-  Set the maildir, folders and stuff.
-
-  #+BEGIN_SRC emacs-lisp
-    (setq mu4e-maildir (expand-file-name "~/desktop/mails"))
-    (setq mu4e-drafts-folder "/main/drafts")
-    (setq mu4e-sent-folder   "/main/Sent")
-    (setq mu4e-trash-folder  "/main/Trash")
-
-    (setq mu4e-get-mail-command "offlineimap")
-    (setq mu4e-html2text-command "html2text")
-  #+END_SRC
-
-
-  #+BEGIN_SRC emacs-lisp
-    (setq message-send-mail-function 'message-send-mail-with-sendmail
-          sendmail-program "/usr/bin/msmtp"
-          user-full-name "Mathieu Corbin")
-  #+END_SRC
-
-
-  #+BEGIN_SRC emacs-lisp
-    (add-to-list 'mu4e-view-actions '("retag" . mu4e-action-retag-message))
-    (add-to-list 'mu4e-headers-actions '("retag" . mu4e-action-retag-message))
-  #+END_SRC
-
-
-  #+BEGIN_SRC emacs-lisp
-    )
-  #+END_SRC
