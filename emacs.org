@@ -41,6 +41,9 @@ It looks kinda like that (click to open the real one) :
   #+begin_src emacs-lisp
     (setq user-full-name "Mathieu Corbin"
           user-mail-address "contact@mathieu-corbin.fr")
+
+    (setq my-credentials-file "~/.emacs.d/private.el")
+
   #+end_src
 
   Let's define default value that could be owerwritten by the host
@@ -2603,12 +2606,45 @@ Let's also rewrite some built-in to better /default/. Let's start with
 
 
   #+BEGIN_SRC emacs-lisp
-    (use-package circe
-      :ensure t
-      :config
-      (progn
-        (use-package helm-circe
-          :ensure t)))
+          (defun my-nickserv-password (_)
+            (with-temp-buffer
+              (insert-file-contents-literally my-credentials-file)
+              (plist-get (read (buffer-string)) :nickserv-password)))
+
+
+    (require 'circe)
+          (setq circe-network-options
+                `(("Freenode"
+                   :nick "mcorbin"
+                   :channels ("#emacs" "#emacs-circe" "#ocaml" "#clojure")
+                   :nickserv-password my-nickserv-password)))
+
+          ;; (setq circe-reduce-lurker-spam t)
+          ;; (circe-set-display-handler "JOIN" (lambda (&rest ignored) nil))))
+
+    (require 'helm-circe)
+
+    ;;;###autoload
+    (defun helm-circe-all ()
+      "Custom helm buffer for circe channel and server buffers only."
+      (interactive)
+      (let ((sources
+             '(helm-circe/circe-new-activity-source
+               helm-circe/circe-channel-buffer-source
+               helm-circe/circe-query-buffer-source
+               helm-circe/circe-server-buffer-source)))
+        (helm :sources sources
+              :buffer "*helm-circe*")))
+
+
+        (defun yenda/circe-connect-or-helm ()
+          (interactive)
+          (if (car (circe-server-buffers))
+              (helm-circe-all)
+              (circe "Freenode")))
+
+          (global-set-key (kbd "<f8>") (lambda() (interactive) (yenda/circe-connect-or-helm)))
+
   #+END_SRC
 
 * Mails ✉
