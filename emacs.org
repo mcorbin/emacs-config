@@ -130,7 +130,6 @@ It looks kinda like that (click to open the real one) :
        :config
        (progn
          (nyan-mode)))
-     
      (require 'neotree)
      (require 'nyan-mode)
 
@@ -157,6 +156,14 @@ It looks kinda like that (click to open the real one) :
 
    #+begin_src emacs-lisp
      (setq font-lock-maximum-decoration 2)
+   #+end_src
+
+   rainbow delimiter mode
+   #+begin_src emacs-lisp
+;;     (use-package rainbow-delimiters
+;;       :ensure t)
+;;     (require 'rainbow-delimiters)
+;;     (add-hook 'prog-mode-hook 'rainbow-delimiters-mode)
    #+end_src
 
 *** Fringe decorations
