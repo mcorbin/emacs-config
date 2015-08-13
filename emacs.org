@@ -39,7 +39,7 @@ It looks kinda like that (click to open the real one) :
 * Personal information 👨
 
   #+begin_src emacs-lisp
-    (setq user-full-name "Mathieu Corbin"
+    (setq user-full-name "mcorbin"
           user-mail-address "contact@mathieu-corbin.fr")
 
     (setq my-credentials-file "~/.emacs.d/private.el")
@@ -2584,20 +2584,24 @@ Let's also rewrite some built-in to better /default/. Let's start with
 #+END_SRC
 
 ** Ocaml
-   (use-package tuareg
-   :ensure t)
+#+BEGIN_SRC emacs-lisp
 
-   (autoload 'tuareg-mode "tuareg" "Major mode for editing Caml code" t)
-   (autoload 'camldebug "camldebug" "Run the Caml debugger" t)
-   (autoload 'tuareg-imenu-set-imenu "tuareg-imenu" 
-   "Configuration of imenu for tuareg" t) 
-   (add-hook 'tuareg-mode-hook 'tuareg-imenu-set-imenu)
+  (use-package tuareg
+    :ensure t)
 
-   (setq auto-mode-alist 
-        (append '(("\\.ml[ily]?$" . tuareg-mode)
-	          ("\\.topml$" . tuareg-mode))
-                  auto-mode-alist))
+    (autoload 'tuareg-mode "tuareg" "Major mode for editing Caml code" t)
+    (autoload 'camldebug "camldebug" "Run the Caml debugger" t)
+    (autoload 'tuareg-imenu-set-imenu "tuareg-imenu"
+    "Configuration of imenu for tuareg" t)
 
+    (add-hook 'tuareg-mode-hook 'tuareg-imenu-set-imenu)
+
+    ;;(setq auto-mode-alist
+    ;;     (append '(("\\.ml[ily]?$" . tuareg-mode)
+    ;;               ("\\.topml$" . tuareg-mode)
+    ;;               auto-mode-alist)))
+
+#+END_SRC
 * Irc
 
   Why not putting all the thing in Emacs =:). IRC is one of them and
