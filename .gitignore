@@ -6,3 +6,4 @@
 !init.el
 !.gitignore
 !README.org
+!custom.el
