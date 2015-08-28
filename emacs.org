@@ -479,11 +479,11 @@ thing. Most of the time I want =auto-fill-mode= in my text files (or
 cases.
 
 #+BEGIN_SRC emacs-lisp
-  (add-hook 'text-mode-hook
-            (lambda()
-              (turn-on-auto-fill)
-              (setq show-trailing-whitespace 't))
-            )
+;;  (add-hook 'text-mode-hook
+  ;;          (lambda()
+    ;;          (turn-on-visual-line)
+      ;;        (setq show-trailing-whitespace 't))
+        ;;    )
 #+END_SRC
 
 Let's also rewrite some built-in to better /default/. Let's start with
