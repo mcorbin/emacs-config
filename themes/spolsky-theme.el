@@ -38,7 +38,7 @@
       (*line-fg*            "#666")
       
       (*type-face*          "#66D9EF")
-      (*method-declaration* "#A6E22E")
+      (*method-declaration* "#A6E22Eloa")
       (*mode-line-bg*       "#333")
       (*mode-inactive-bg*   "#222")
       (*mode-line-fg*       "#EEDC82")
@@ -49,7 +49,7 @@
       (*warning*            "#FF6C60")
       (*regexp*             "#A63A62")
       (*string*             "#EEDC82")
-      (*variable*           "#FD971F__")
+      (*variable*           "#FD971F")
       (*visual-selection*   "#555"))
 
   (custom-theme-set-faces
