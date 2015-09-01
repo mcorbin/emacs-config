@@ -38,7 +38,7 @@
       (*line-fg*            "#666")
       
       (*type-face*          "#66D9EF")
-      (*method-declaration* "#A6E22Eloa")
+      (*method-declaration* "#A6E22E")
       (*mode-line-bg*       "#333")
       (*mode-inactive-bg*   "#222")
       (*mode-line-fg*       "#EEDC82")
