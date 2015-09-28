@@ -1235,7 +1235,7 @@ Let's also rewrite some built-in to better /default/. Let's start with
    #+END_SRC
 
 
-** Auto-complete
+** company mode
 
    #+BEGIN_QUOTE
    company mode
@@ -1245,7 +1245,9 @@ Let's also rewrite some built-in to better /default/. Let's start with
    (use-package company
        :ensure t)
    (require 'company)
-
+   (global-company-mode)
+   (global-set-key (kbd "TAB") #'company-indent-or-complete-common)
+   
    #+END_SRC
 
 
@@ -2562,6 +2564,21 @@ Let's also rewrite some built-in to better /default/. Let's start with
 ;;(eval-after-load "python"
 ;;  '(define-key python-mode-map "\C-cx" 'jedi-direx:pop-to-buffer))
 ;(add-hook 'jedi-mode-hook 'jedi-direx:setup)
+
+#+END_SRC
+** Rust
+#+BEGIN_SRC emacs-lisp
+
+(use-package racer
+  :ensure t)
+
+  (setq racer-cmd "/home/mathieu/racer/target/release/racer")
+  (setq racer-rust-src-path "/home/mathieu/Prog/rustc-1.3.0/src/")
+
+  (add-hook 'rust-mode-hook #'racer-mode)
+  (add-hook 'racer-mode-hook #'eldoc-mode)
+
+  (add-hook 'racer-mode-hook #'company-mode)
 
 #+END_SRC
 
