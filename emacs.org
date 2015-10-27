@@ -183,6 +183,11 @@ It looks kinda like that (click to open the real one) :
     #+END_SRC
 
 *** Fonts
+   #+begin_src emacs-lisp
+
+    (set-face-attribute 'default nil :family "Monospace" :height 140)
+
+   #+end_src
 
 *** Themes
 
@@ -2635,7 +2640,13 @@ Let's also rewrite some built-in to better /default/. Let's start with
   circe.
 
 
+
   #+BEGIN_SRC emacs-lisp
+
+     (use-package circe
+       :ensure t)
+
+
           (defun my-nickserv-password (_)
             (with-temp-buffer
               (insert-file-contents-literally my-credentials-file)
