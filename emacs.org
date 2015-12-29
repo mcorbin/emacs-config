@@ -167,6 +167,7 @@ It looks kinda like that (click to open the real one) :
        :ensure t)
      (require 'rainbow-delimiters)
      (add-hook 'prog-mode-hook 'rainbow-delimiters-mode)
+     (add-hook 'cider-repl-mode-hook 'rainbow-delimiters-mode)
    #+end_src
 
 *** Fringe decorations
@@ -2299,6 +2300,26 @@ Let's also rewrite some built-in to better /default/. Let's start with
         :config
         (progn
           (add-hook 'clojure-mode-hook 'my/lisps-mode-hook)))
+    #+END_SRC
+
+    #+BEGIN_SRC emacs-lisp
+      (use-package clj-refactor
+        :ensure t)
+
+
+      (defun clj-refactor-mode-hook ()
+          (clj-refactor-mode 1)
+          (yas-minor-mode 1) ; for adding require/use/import statements
+          ;; This choice of keybinding leaves cider-macroexpand-1 unbound
+          (cljr-add-keybindings-with-prefix "C-c C-m"))
+
+      (add-hook 'clojure-mode-hook #'clj-refactor-mode-hook)
+
+      (use-package clojure-mode-extra-font-locking
+        :ensure t)
+
+      (require 'clojure-mode-extra-font-locking)
+
     #+END_SRC
 
 **** cider
