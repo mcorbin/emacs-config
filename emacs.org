@@ -445,13 +445,6 @@ And bind =cleanup-buffer= and =cleanup-region=.
   (global-set-key (kbd "C-C i") 'my/indent-region-or-buffer)
 #+end_src
 
-Visual line mode for all files
-
-#+BEGIN_SRC emacs-lisp
- (global-visual-line-mode 1)
-
-#+END_SRC
-
 Let's also rewrite some built-in to better /default/. Let's start with
 [[http://emacsredux.com/blog/2013/05/22/smarter-navigation-to-the-beginning-of-a-line/][smarter navigation to the beginning of a line]].
 
@@ -2530,7 +2523,7 @@ Cider package with config
 (use-package racer
   :ensure t)
 
-  (setq racer-cmd "~/prog/racer/target/release/racer")
+  (setq racer-cmd "~/.cargo/bin/racer")
   (setq racer-rust-src-path "/usr/local/src/rust/src")
 
   (add-hook 'rust-mode-hook #'racer-mode)
