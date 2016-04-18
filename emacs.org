@@ -2054,7 +2054,7 @@ Let's also rewrite some built-in to better /default/. Let's start with
        :config
        (progn
          (setq projectile-completion-system 'default)
-         (setq projectile-enable-caching t)
+         (setq projectile-enable-caching nil)
          (projectile-global-mode)))
    #+END_SRC
 
@@ -2221,7 +2221,7 @@ Let's also rewrite some built-in to better /default/. Let's start with
         (progn
           (add-hook 'clojure-mode-hook 'my/lisps-mode-hook)))
     #+END_SRC
-
+    
     extra clojure modes
     #+BEGIN_SRC emacs-lisp
       (use-package clj-refactor
@@ -2237,6 +2237,7 @@ Let's also rewrite some built-in to better /default/. Let's start with
 
       (use-package clojure-mode-extra-font-locking
         :ensure t)
+    
 
     #+END_SRC
 
@@ -2247,8 +2248,11 @@ Cider package with config
        (use-package cider
          :ensure t
          :config (put-clojure-indent 'match 1))
-       
+
+       (setq cider-repl-display-help-banner nil)
      #+END_SRC
+*** racket
+
 ** S1QL
 
    Emacs is really more than an editor. The SQL mode is quick and cool to
