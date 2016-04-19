@@ -986,6 +986,12 @@ I cannot write lisp without rainbow-delimiters
                  (toggle-truncate-lines t)))
 #+END_SRC
 
+** Adoc
+
+   #+BEGIN_SRC emacs-lisp
+     (use-package adoc-mode
+       :ensure t)
+   #+END_SRC
 ** Markdown, Yaml & Toml
 
    #+BEGIN_SRC emacs-lisp
