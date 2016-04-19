@@ -95,6 +95,10 @@ Cette config est grandement inspirée de la sienne, encore merci à lui ;)
    #+BEGIN_SRC emacs-lisp
      (fset 'yes-or-no-p 'y-or-n-p)
    #+END_SRC
+
+   #+BEGIN_SRC emacs-lisp
+     (add-hook 'text-mode-hook 'visual-line-mode)
+   #+END_SRC
 *** Encoding
 
     utf-8  by default
