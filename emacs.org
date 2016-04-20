@@ -72,6 +72,7 @@ Cette config est grandement inspirée de la sienne, encore merci à lui ;)
     I want to detect trailing whitespace quickly
     #+BEGIN_SRC emacs-lisp
       (setq-default show-trailing-whitespace t)
+
     #+END_SRC
 
 *** Fonts
@@ -921,8 +922,7 @@ I cannot write lisp without rainbow-delimiters
       (defun my/lisps-mode-hook ()
         (paredit-mode t)
         (rainbow-delimiters-mode t)
-        (highlight-parentheses-mode t)
-        )
+        (highlight-parentheses-mode t))
     #+END_SRC
 
 *** Emacs lisp
@@ -973,6 +973,9 @@ I cannot write lisp without rainbow-delimiters
          :config (put-clojure-indent 'match 1))
 
        (setq cider-repl-display-help-banner nil)
+       (add-hook 'cider-repl-mode-hook
+              (lambda () (setq show-trailing-whitespace nil)))
+       (add-hook 'cider-repl-mode-hook 'my/lisps-mode-hook)
      #+END_SRC
 
 ** S1QL
