@@ -99,6 +99,7 @@ Cette config est grandement inspirée de la sienne, encore merci à lui ;)
 
    #+BEGIN_SRC emacs-lisp
      (add-hook 'text-mode-hook 'visual-line-mode)
+     (add-hook 'text-mode-hook 'rainbow-delimiters-mode)
    #+END_SRC
 *** Encoding
 
@@ -274,7 +275,6 @@ Cette config est grandement inspirée de la sienne, encore merci à lui ;)
         :ensure t
         :bind ("C-=" . er/expand-region))
     #+END_SRC
-
 
 *** Zoom
     #+BEGIN_SRC emacs-lisp
