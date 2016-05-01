@@ -880,6 +880,22 @@ Cette config est grandement inspirée de la sienne, encore merci à lui ;)
       (setq compilation-scroll-output t)
     #+END_SRC
 
+** Engine mode
+
+
+   #+BEGIN_SRC emacs-lisp
+     (use-package engine-mode
+       :ensure t
+       :config
+       (progn
+         (engine-mode 1)
+         (defengine google
+           "http://www.google.com/search?ie=utf-8&oe=utf-8&q=%s"
+           :keybinding "g")
+         (setq engine/browser-function 'browse-url-firefox)))
+   #+END_SRC
+
+
 * Languages
 ** Lisp
 
