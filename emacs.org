@@ -895,7 +895,6 @@ Cette config est grandement inspirée de la sienne, encore merci à lui ;)
          (setq engine/browser-function 'browse-url-firefox)))
    #+END_SRC
 
-
 * Languages
 ** Lisp
 
@@ -1123,21 +1122,48 @@ I cannot write lisp without rainbow-delimiters
 #+END_SRC
 
 ** Ocaml
+*** exec path from shell
+
+#+BEGIN_SRC emacs-lisp
+;(use-package exec-path-from-shell
+;  :ensure t)
+; (exec-path-from-shell-initialize)
+#+END_SRC
+*** Tuareg
+First, install tuareg with opan (opan install tuareg). Next, loads it.
+
 #+BEGIN_SRC emacs-lisp
 
-  (use-package tuareg
-    :ensure t)
+  (load "~/.opam/4.03.0/share/emacs/site-lisp/tuareg-site-file")
+  (add-to-list 'load-path "~/.opam/4.03.0/share/emacs/site-lisp/")
 
-    (autoload 'tuareg-mode "tuareg" "Major mode for editing Caml code" t)
-    (autoload 'camldebug "camldebug" "Run the Caml debugger" t)
-    (autoload 'tuareg-imenu-set-imenu "tuareg-imenu"
-    "Configuration of imenu for tuareg" t)
+  (add-hook 'tuareg-mode
+          (lambda () (electric-indent-mode -1)))
 
-    (add-hook 'tuareg-mode-hook 'tuareg-imenu-set-imenu)
+#+END_SRC
+*** Merlin
+Merlin is an assistant for editing OCaml code. It aims to provide the features available in modern IDEs : error reporting, auto completion, source browsing and much more.
+opam install merlin
 
-    ;;(setq auto-mode-alist
-    ;;     (append '(("\\.ml[ily]?$" . tuareg-mode)
-    ;;               ("\\.topml$" . tuareg-mode)
-    ;;               auto-mode-alist)))
+#+BEGIN_SRC emacs-lisp
+  (setq opam-share (substring (shell-command-to-string "opam config var share 2> /dev/null") 0 -1))
+  (setq opam-bin (substring (shell-command-to-string "opam config var bin 2> /dev/null") 0 -1))
+  (add-to-list 'load-path (concat opam-share "/emacs/site-lisp"))
 
+  (require 'merlin)
+  (add-hook 'tuareg-mode-hook 'merlin-mode)
+  (setq merlin-command 'opam)
+
+  (with-eval-after-load 'company
+    (add-to-list 'company-backends 'merlin-company-backend))
+#+END_SRC
+*** utop
+utop is an improved toplevel for OCaml. It can run in a terminal or in Emacs. It supports line edition, history, real-time and context sensitive completion, colors, and more.
+opam install utop
+
+#+BEGIN_SRC emacs-lisp
+(use-package utop
+  :ensure t)
+
+(setq utop-command "opam config exec -- utop -emacs")
 #+END_SRC
