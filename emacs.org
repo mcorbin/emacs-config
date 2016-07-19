@@ -1066,7 +1066,7 @@ I cannot write lisp without rainbow-delimiters
        :defer t)
    #+END_SRC
 
-** PYTHON
+** Python
 #+BEGIN_SRC emacs-lisp
 
   (use-package elpy
@@ -1075,8 +1075,8 @@ I cannot write lisp without rainbow-delimiters
     (progn
       (elpy-enable)))
 
-  (use-package jedi-core
-    :ensure t)
+;;  (use-package jedi-core
+;;    :ensure t)
 
   (use-package company-jedi
     :ensure t)
@@ -1166,4 +1166,11 @@ opam install utop
   :ensure t)
 
 (setq utop-command "opam config exec -- utop -emacs")
+#+END_SRC
+** groovy
+#+BEGIN_SRC emacs-lisp
+
+  (use-package groovy-mode
+    :ensure t)
+
 #+END_SRC
