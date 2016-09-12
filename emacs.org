@@ -476,6 +476,13 @@ Cette config est grandement inspirée de la sienne, encore merci à lui ;)
            ))
      #+END_SRC
 
+*** Flycheck
+    #+BEGIN_SRC emacs-lisp
+      (use-package flycheck
+        :ensure t
+        :config (global-flycheck-mode))
+    #+END_SRC
+
 ** Server mode
 
    Start a server in not already running. I usually start emacs as a
@@ -898,9 +905,7 @@ Cette config est grandement inspirée de la sienne, encore merci à lui ;)
 
    #+BEGIN_SRC emacs-lisp
      (use-package guru-mode
-       :ensure t
-       :config
-       (guru-global-mode +1))
+       :ensure t)
    #+END_SRC
 
 * Languages
@@ -1098,8 +1103,17 @@ I cannot write lisp without rainbow-delimiters
 ** Rust
 #+BEGIN_SRC emacs-lisp
 
-(use-package racer
-  :ensure t)
+  (use-package rust-mode
+    :ensure t)
+
+  (use-package racer
+    :ensure t)
+
+  (use-package cargo
+    :ensure t)
+
+  (use-package flycheck-rust
+    :ensure t)
 
   (setq racer-cmd "~/.cargo/bin/racer")
   (setq racer-rust-src-path "/usr/local/src/rust/src")
@@ -1108,7 +1122,14 @@ I cannot write lisp without rainbow-delimiters
   (add-hook 'racer-mode-hook #'eldoc-mode)
 
   (add-hook 'racer-mode-hook #'company-mode)
+  (add-hook 'rust-mode-hook 'cargo-minor-mode)
 
+  (add-hook 'rust-mode-hook
+          (lambda ()
+            (local-set-key (kbd "C-c <tab>") #'rust-format-buffer)))
+
+  (add-hook 'flycheck-mode-hook #'flycheck-rust-setup)
+  (setq exec-path (append exec-path '("~/.cargo/bin")))
 #+END_SRC
 
 ** LATEX
