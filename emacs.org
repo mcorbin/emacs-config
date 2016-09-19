@@ -980,16 +980,25 @@ I cannot write lisp without rainbow-delimiters
         :ensure t)
 
       (defun clj-refactor-mode-hook ()
-          (clj-refactor-mode 1)
-          (yas-minor-mode 1) ; for adding require/use/import statements
-          ;; This choice of keybinding leaves cider-macroexpand-1 unbound
-          (cljr-add-keybindings-with-prefix "C-c C-m"))
+        (clj-refactor-mode 1)
+        (yas-minor-mode 1) ; for adding require/use/import statements
+        ;; This choice of keybinding leaves cider-macroexpand-1 unbound
+        (cljr-add-keybindings-with-prefix "C-c C-m"))
 
       (add-hook 'clojure-mode-hook #'clj-refactor-mode-hook)
 
       (use-package clojure-mode-extra-font-locking
         :ensure t)
 
+      (defvar clojure-riemann-vars
+        '("where" "tagged" "info" "streams" "with"
+          ))
+
+      (font-lock-add-keywords 'clojure-mode
+                              `((,(concat "(\\(?:\.*/\\)?"
+                                          (regexp-opt clojure-riemann-vars t)
+                                          "\\>")
+                                 1 font-lock-builtin-face)))
     #+END_SRC
 
 **** cider
@@ -1199,7 +1208,7 @@ opam install utop
 ** groovy
 #+BEGIN_SRC emacs-lisp
 
-  (use-package groovy-mode
-    :ensure t)
+;  (use-package groovy-mode
+;    :ensure t)
 
 #+END_SRC
