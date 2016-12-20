@@ -908,6 +908,25 @@ Cette config est grandement inspirée de la sienne, encore merci à lui ;)
        :ensure t)
    #+END_SRC
 
+** circe
+
+   #+BEGIN_SRC emacs-lisp
+     (use-package circe
+       :ensure t)
+
+     (defun my-nickserv-password (_)
+       (with-temp-buffer
+         (insert-file-contents-literally "~/.emacs.d/private.el")
+         (plist-get (read (buffer-string)) :nickserv-password)))
+
+     (setq circe-network-options
+           '(("Freenode"
+              :tls t
+              :nick "mcorbin"
+              :nickserv-password my-nickserv-password
+              )))
+   #+END_SRC
+
 * Languages
 ** Lisp
 
@@ -1091,6 +1110,7 @@ I cannot write lisp without rainbow-delimiters
 ** Python
 #+BEGIN_SRC emacs-lisp
 
+
   (use-package elpy
     :ensure t
     :init
@@ -1100,11 +1120,22 @@ I cannot write lisp without rainbow-delimiters
 ;;  (use-package jedi-core
 ;;    :ensure t)
 
+
   (use-package company-jedi
     :ensure t)
 
   (defun my/python-mode-hook ()
     (add-to-list 'company-backends 'company-jedi))
+
+(defun python-shell-completion-native-try ()
+  "Return non-nil if can trigger native completion."
+  (let ((python-shell-completion-native-enable t)
+        (python-shell-completion-native-output-timeout
+         python-shell-completion-native-try-output-timeout))
+    (python-shell-completion-native-get-completions
+     (get-buffer-process (current-buffer))
+     nil "_")))
+
 
   (add-hook 'python-mode-hook 'my/python-mode-hook)
 
@@ -1168,12 +1199,12 @@ I cannot write lisp without rainbow-delimiters
 ; (exec-path-from-shell-initialize)
 #+END_SRC
 *** Tuareg
-First, install tuareg with opan (opan install tuareg). Next, loads it.
+First, install tuareg with opam (opam install tuareg). Next, loads it.
 
 #+BEGIN_SRC emacs-lisp
 
-  (load "~/.opam/4.03.0/share/emacs/site-lisp/tuareg-site-file")
-  (add-to-list 'load-path "~/.opam/4.03.0/share/emacs/site-lisp/")
+  (load "~/.opam/4.04.0/share/emacs/site-lisp/tuareg-site-file")
+  (add-to-list 'load-path "~/.opam/4.04.0/share/emacs/site-lisp/")
 
   (add-hook 'tuareg-mode
           (lambda () (electric-indent-mode -1)))
@@ -1184,16 +1215,17 @@ Merlin is an assistant for editing OCaml code. It aims to provide the features a
 opam install merlin
 
 #+BEGIN_SRC emacs-lisp
-  (setq opam-share (substring (shell-command-to-string "opam config var share 2> /dev/null") 0 -1))
-  (setq opam-bin (substring (shell-command-to-string "opam config var bin 2> /dev/null") 0 -1))
-  (add-to-list 'load-path (concat opam-share "/emacs/site-lisp"))
+  (let ((opam-share (ignore-errors (car (process-lines "opam" "config" "var" "share")))))
+      (when (and opam-share (file-directory-p opam-share))
+       ;; Register Merlin
+       (add-to-list 'load-path (expand-file-name "emacs/site-lisp" opam-share))
+       (autoload 'merlin-mode "merlin" nil t nil)
+       ;; Automatically start it in OCaml buffers
+       (add-hook 'tuareg-mode-hook 'merlin-mode t)
+       (add-hook 'caml-mode-hook 'merlin-mode t)
+       ;; Use opam switch to lookup ocamlmerlin binary
+       (setq merlin-command 'opam)))
 
-  (require 'merlin)
-  (add-hook 'tuareg-mode-hook 'merlin-mode)
-  (setq merlin-command 'opam)
-
-  (with-eval-after-load 'company
-    (add-to-list 'company-backends 'merlin-company-backend))
 #+END_SRC
 *** utop
 utop is an improved toplevel for OCaml. It can run in a terminal or in Emacs. It supports line edition, history, real-time and context sensitive completion, colors, and more.
