@@ -1156,7 +1156,7 @@ I cannot write lisp without rainbow-delimiters
     :ensure t)
 
   (setq racer-cmd "~/.cargo/bin/racer")
-  (setq racer-rust-src-path "/usr/local/src/rust/src")
+  (setq racer-rust-src-path "~/.multirust/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/src/")
 
   (add-hook 'rust-mode-hook #'racer-mode)
   (add-hook 'racer-mode-hook #'eldoc-mode)
@@ -1169,6 +1169,7 @@ I cannot write lisp without rainbow-delimiters
             (local-set-key (kbd "C-c <tab>") #'rust-format-buffer)))
 
   (add-hook 'flycheck-mode-hook #'flycheck-rust-setup)
+  (setenv "PATH" (concat (getenv "PATH") ":~/.cargo/bin"))
   (setq exec-path (append exec-path '("~/.cargo/bin")))
 #+END_SRC
 
@@ -1237,6 +1238,14 @@ opam install utop
 
 (setq utop-command "opam config exec -- utop -emacs")
 #+END_SRC
+** Go
+#+BEGIN_SRC emacs-lisp
+
+  (use-package go-mode
+    :ensure t)
+
+#+END_SRC
+
 ** groovy
 #+BEGIN_SRC emacs-lisp
 
