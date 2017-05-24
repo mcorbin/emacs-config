@@ -8,6 +8,8 @@
     |  -__|        |  _  |  __|__ --|______|  __|  _  |     |   _|  ||  _  |
     |_____|__|__|__|___._|____|_____|      |____|_____|__|__|__| |__||___  |
                                                                      |_____|
+
+                             In LISP We Trust
 #+end_src
 
 Thx to vdemeester (https://github.com/vdemeester/emacs-config) !
@@ -713,13 +715,6 @@ Cette config est grandement inspirée de la sienne, encore merci à lui ;)
          :ensure t)
      #+END_SRC
 
-**** git-blame
-
-     #+BEGIN_SRC emacs-lisp
-       (use-package git-blame
-         :ensure t)
-     #+END_SRC
-
 ** move-text
 
    Allows to move the current line or region up/down. The source code is
@@ -914,33 +909,20 @@ Cette config est grandement inspirée de la sienne, encore merci à lui ;)
      (use-package circe
        :ensure t)
 
-     (defun my-nickserv-password (_)
-       (with-temp-buffer
-         (insert-file-contents-literally "~/.emacs.d/private.el")
-         (plist-get (read (buffer-string)) :nickserv-password)))
+;     (defun my-nickserv-password (_)
+;       (with-temp-buffer
+;         (insert-file-contents-literally "~/.emacs.d/private.el")
+;         (plist-get (read (buffer-string)) :nickserv-password)))
 
      (setq circe-network-options
            '(("Freenode"
               :tls t
               :nick "mcorbin"
-              :nickserv-password my-nickserv-password
+;              :nickserv-password (my-nickserv-password)
               )))
    #+END_SRC
 
 * Languages
-** Lisp
-
-I cannot write lisp without rainbow-delimiters
-
-   #+BEGIN_SRC emacs-lisp
-     (use-package rainbow-delimiters
-       :ensure t
-       :config
-       (progn
-         (add-hook 'prog-mode-hook 'rainbow-delimiters-mode)
-         (add-hook 'cider-repl-mode-hook 'rainbow-delimiters-mode)))
-
-   #+END_SRC
 ** Lua
 
    #+BEGIN_SRC emacs-lisp
@@ -951,12 +933,22 @@ I cannot write lisp without rainbow-delimiters
 ** Lisp(s)
 *** General
 
+   I cannot write lisp without rainbow-delimiters
+
+   #+BEGIN_SRC emacs-lisp
+     (use-package rainbow-delimiters
+       :ensure t
+       :config
+       (progn
+         (add-hook 'prog-mode-hook 'rainbow-delimiters-mode)
+         (add-hook 'cider-repl-mode-hook 'rainbow-delimiters-mode)))
+
+   #+END_SRC
+
     Let's install some LISP common useful modes.
 
     #+BEGIN_SRC emacs-lisp
       (use-package paredit
-        :ensure t)
-      (use-package rainbow-delimiters
         :ensure t)
       (use-package highlight-parentheses
         :ensure t)
@@ -978,8 +970,7 @@ I cannot write lisp without rainbow-delimiters
       (add-hook 'emacs-lisp-mode-hook
                 (lambda ()
                   (my/lisps-mode-hook)
-                  (eldoc-mode 1))
-                )
+                  (eldoc-mode 1)))
     #+END_SRC
 
 *** Clojure
@@ -1173,71 +1164,6 @@ I cannot write lisp without rainbow-delimiters
   (setq exec-path (append exec-path '("~/.cargo/bin")))
 #+END_SRC
 
-** LATEX
-
-#+BEGIN_SRC emacs-lisp
-
-   (require 'tex)
-   (setq TeX-auto-save t)
-   (setq TeX-parse-self t)
-   (setq-default TeX-master nil)
-
-   (add-hook 'LaTeX-mode-hook 'visual-line-mode)
-   (add-hook 'LaTeX-mode-hook 'flyspell-mode)
-   (add-hook 'LaTeX-mode-hook 'LaTeX-math-mode)
-
-   ;;(add-hook 'LaTeX-mode-hook 'turn-on-reftex)
-  ;; (setq reftex-plug-into-AUCTeX t)
-
-#+END_SRC
-
-** Ocaml
-*** exec path from shell
-
-#+BEGIN_SRC emacs-lisp
-;(use-package exec-path-from-shell
-;  :ensure t)
-; (exec-path-from-shell-initialize)
-#+END_SRC
-*** Tuareg
-First, install tuareg with opam (opam install tuareg). Next, loads it.
-
-#+BEGIN_SRC emacs-lisp
-
-  (load "~/.opam/4.04.0/share/emacs/site-lisp/tuareg-site-file")
-  (add-to-list 'load-path "~/.opam/4.04.0/share/emacs/site-lisp/")
-
-  (add-hook 'tuareg-mode
-          (lambda () (electric-indent-mode -1)))
-
-#+END_SRC
-*** Merlin
-Merlin is an assistant for editing OCaml code. It aims to provide the features available in modern IDEs : error reporting, auto completion, source browsing and much more.
-opam install merlin
-
-#+BEGIN_SRC emacs-lisp
-  (let ((opam-share (ignore-errors (car (process-lines "opam" "config" "var" "share")))))
-      (when (and opam-share (file-directory-p opam-share))
-       ;; Register Merlin
-       (add-to-list 'load-path (expand-file-name "emacs/site-lisp" opam-share))
-       (autoload 'merlin-mode "merlin" nil t nil)
-       ;; Automatically start it in OCaml buffers
-       (add-hook 'tuareg-mode-hook 'merlin-mode t)
-       (add-hook 'caml-mode-hook 'merlin-mode t)
-       ;; Use opam switch to lookup ocamlmerlin binary
-       (setq merlin-command 'opam)))
-
-#+END_SRC
-*** utop
-utop is an improved toplevel for OCaml. It can run in a terminal or in Emacs. It supports line edition, history, real-time and context sensitive completion, colors, and more.
-opam install utop
-
-#+BEGIN_SRC emacs-lisp
-(use-package utop
-  :ensure t)
-
-(setq utop-command "opam config exec -- utop -emacs")
-#+END_SRC
 ** Go
 #+BEGIN_SRC emacs-lisp
 
@@ -1249,7 +1175,7 @@ opam install utop
 ** groovy
 #+BEGIN_SRC emacs-lisp
 
-;  (use-package groovy-mode
-;    :ensure t)
+  (use-package groovy-mode
+    :ensure t)
 
 #+END_SRC
