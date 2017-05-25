@@ -1027,6 +1027,16 @@ Cette config est grandement inspirée de la sienne, encore merci à lui ;)
        (add-hook 'cider-repl-mode-hook 'my/lisps-mode-hook)
      #+END_SRC
 
+*** Scheme
+    #+BEGIN_SRC emacs-lisp
+      (use-package geiser
+        :ensure t
+        :config
+        (progn
+          (add-hook 'scheme-mode-hook 'my/lisps-mode-hook)
+          (add-hook 'geiser-repl-mode-hook 'my/lisps-mode-hook)))
+    #+END_SRC
+
 ** S1QL
 
    By default, Emacs does not automatically truncate long lines in
