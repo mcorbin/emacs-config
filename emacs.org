@@ -81,7 +81,9 @@ Cette config est grandement inspirée de la sienne, encore merci à lui ;)
 
    I use Monospace font.
    #+begin_src emacs-lisp
-    (set-face-attribute 'default nil :family "Monospace" :height 140)
+    (set-default-font "DejaVu Sans Mono")
+    (set-frame-font "DejaVu Sans Mono")
+    (set-face-attribute 'default nil :family "DejaVu Sans Mono" :height 140)
    #+end_src
 *** Themes
 
