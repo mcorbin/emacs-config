@@ -1237,7 +1237,7 @@ Setup the go-mode hook to activate gofmt on save and co.(copyright vdemeester ;)
 #+BEGIN_SRC emacs-lisp
 
 (defun my-go-mode-hook ()
-  (setq gofmt-command "gofmts")
+  (setq gofmt-command "gofmt")
   (add-hook 'before-save-hook 'gofmt-before-save)
   (if (not (string-match "go" compile-command))
       (set (make-local-variable 'compile-command)
@@ -1253,3 +1253,26 @@ Setup the go-mode hook to activate gofmt on save and co.(copyright vdemeester ;)
     :ensure t)
 
 #+END_SRC
+** Terraform
+   #+BEGIN_SRC emacs-lisp
+     (use-package terraform-mode
+       :ensure t)
+   #+END_SRC
+** Ocaml
+   #+BEGIN_SRC emacs-lisp
+
+     (use-package tuareg
+       :ensure t)
+
+     (let ((opam-share (ignore-errors (car (process-lines "opam" "config" "var" "share")))))
+      (when (and opam-share (file-directory-p opam-share))
+       ;; Register Merlin
+       (add-to-list 'load-path (expand-file-name "emacs/site-lisp" opam-share))
+       (autoload 'merlin-mode "merlin" nil t nil)
+       ;; Automatically start it in OCaml buffers
+       (add-hook 'tuareg-mode-hook 'merlin-mode t)
+       (add-hook 'caml-mode-hook 'merlin-mode t)
+       ;; Use opam switch to lookup ocamlmerlin binary
+       (setq merlin-command 'opam)))
+
+   #+END_SRC
