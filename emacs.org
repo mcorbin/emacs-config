@@ -1046,11 +1046,13 @@ Cette config est grandement inspirée de la sienne, encore merci à lui ;)
      #+END_SRC
 
 *** Scheme
+
     #+BEGIN_SRC emacs-lisp
       (use-package geiser
         :ensure t
         :config
         (progn
+          (setq geiser-racket-binary "/home/mathieu/racket/bin/racket")
           (add-hook 'scheme-mode-hook 'my/lisps-mode-hook)
           (add-hook 'geiser-repl-mode-hook 'my/lisps-mode-hook)))
     #+END_SRC
