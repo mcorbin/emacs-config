@@ -258,10 +258,6 @@ Cette config est grandement inspirée de la sienne, encore merci à lui ;)
 
     #+BEGIN_SRC emacs-lisp
 
-      (use-package dired+
-                   :ensure t
-                   :init)
-
       (use-package dired-x)
       (use-package dired-aux)
 
@@ -1140,8 +1136,8 @@ Cette config est grandement inspirée de la sienne, encore merci à lui ;)
     (progn
       (elpy-enable)))
 
-;;  (use-package jedi-core
-;;    :ensure t)
+  (use-package jedi-core
+    :ensure t)
 
 
   (use-package company-jedi
@@ -1276,5 +1272,13 @@ Setup the go-mode hook to activate gofmt on save and co.(copyright vdemeester ;)
        (add-hook 'caml-mode-hook 'merlin-mode t)
        ;; Use opam switch to lookup ocamlmerlin binary
        (setq merlin-command 'opam)))
+
+   #+END_SRC
+** Puppet
+
+   #+BEGIN_SRC emacs-lisp
+
+     (use-package puppet-mode
+       :ensure t)
 
    #+END_SRC
