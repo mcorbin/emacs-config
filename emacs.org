@@ -815,6 +815,8 @@ Cette config est grandement inspirée de la sienne, encore merci à lui ;)
        (progn
          (setq projectile-completion-system 'default)
          (setq projectile-enable-caching nil)
+         (define-key projectile-mode-map (kbd "s-p") 'projectile-command-map)
+         (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
          (projectile-global-mode)))
    #+END_SRC
 
@@ -1175,7 +1177,6 @@ Cette config est grandement inspirée de la sienne, encore merci à lui ;)
     :ensure t)
 
   (setq racer-cmd "~/.cargo/bin/racer")
-  (setq racer-rust-src-path "~/.multirust/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/src/")
 
   (add-hook 'rust-mode-hook #'racer-mode)
   (add-hook 'racer-mode-hook #'eldoc-mode)
@@ -1228,6 +1229,13 @@ And some extra packages
 
   (use-package golint
     :ensure t)
+
+  (setenv "PATH" (concat (getenv "PATH") ":/home/mathieu/prog/go/bin"))
+  (setq exec-path (append exec-path '("/home/mathieu/prog/go/bin")))
+
+  (setenv "PATH" (concat (getenv "PATH") ":/usr/local/go/bin/"))
+  (setq exec-path (append exec-path '("/usr/local/go/bin/")))
+
 #+END_SRC
 
 Setup the go-mode hook to activate gofmt on save and co.(copyright vdemeester ;))
