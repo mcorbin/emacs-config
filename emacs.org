@@ -811,6 +811,7 @@ Cette config est grandement inspirée de la sienne, encore merci à lui ;)
    #+BEGIN_SRC emacs-lisp
      (use-package projectile
        :ensure t
+       :init (setq projectile-keymap-prefix (kbd "C-c p"))
        :config
        (progn
          (setq projectile-completion-system 'default)
@@ -996,16 +997,6 @@ Cette config est grandement inspirée de la sienne, encore merci à lui ;)
 
     extra clojure modes
     #+BEGIN_SRC emacs-lisp
-      (use-package clj-refactor
-        :ensure t)
-
-      (defun clj-refactor-mode-hook ()
-        (clj-refactor-mode 1)
-        (yas-minor-mode 1) ; for adding require/use/import statements
-        ;; This choice of keybinding leaves cider-macroexpand-1 unbound
-        (cljr-add-keybindings-with-prefix "C-c C-m"))
-
-      (add-hook 'clojure-mode-hook #'clj-refactor-mode-hook)
 
       (use-package clojure-mode-extra-font-locking
         :ensure t)
@@ -1136,6 +1127,7 @@ Cette config est grandement inspirée de la sienne, encore merci à lui ;)
     :ensure t
     :init
     (progn
+      (setq elpy-rpc-python-command "python3")
       (elpy-enable)))
 
   (use-package jedi-core
@@ -1198,10 +1190,18 @@ Cette config est grandement inspirée de la sienne, encore merci à lui ;)
 Add go-mode
 #+BEGIN_SRC emacs-lisp
 
+  ;; this is from https://github.com/vincentbernat/dot.emacs
+
   (setenv "GOPATH" "/home/mathieu/prog/go")
+
+  (setenv "PATH" (concat (getenv "PATH") ":/home/mathieu/prog/go/bin:/usr/local/go/bin"))
+  (setq exec-path (append exec-path '("/home/mathieu/prog/go/bin")))
+  (setq exec-path (append exec-path '("/usr/local/go/bin")))
+
   (use-package go-mode
     :ensure t)
 
+  (setq flycheck-global-modes t)
 #+END_SRC
 
 And some extra packages
@@ -1211,10 +1211,6 @@ And some extra packages
   (use-package company-go
     :ensure t
     :config (add-to-list 'company-backends 'company-go))
-
-  (use-package go-eldoc
-    :ensure t
-    :config (add-hook 'go-mode-hook 'go-eldoc-setup))
 
   (use-package gotest
     :ensure t
