@@ -1254,6 +1254,12 @@ Setup the go-mode hook to activate gofmt on save and co.(copyright vdemeester ;)
   (use-package groovy-mode
     :ensure t)
 
+  (add-hook 'groovy-mode-hook
+    (lambda ()
+    (setq c-basic-offset 2
+          tab-width 2
+          groovy-indent-offset 2
+          indent-tabs-mode nil)))
 #+END_SRC
 ** Terraform
    #+BEGIN_SRC emacs-lisp
