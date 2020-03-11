@@ -986,12 +986,20 @@ Cette config est grandement inspirée de la sienne, encore merci à lui ;)
 
 *** Clojure
 
+    Install flycheck-clj-kondo
+
+    #+BEGIN_SRC emacs-lisp
+      (use-package flycheck-clj-kondo
+        :ensure t)
+    #+END_SRC
+
     Clojure mode
     #+BEGIN_SRC emacs-lisp
       (use-package clojure-mode
         :ensure t
         :config
         (progn
+          (require 'flycheck-clj-kondo)
           (add-hook 'clojure-mode-hook 'my/lisps-mode-hook)))
     #+END_SRC
 
@@ -1018,7 +1026,7 @@ Cette config est grandement inspirée de la sienne, encore merci à lui ;)
       "(do (require 'figwheel-sidecar.repl-api)
            (figwheel-sidecar.repl-api/start-figwheel!)
            (figwheel-sidecar.repl-api/cljs-repl))")
-
+           
     #+END_SRC
 **** cider
 
@@ -1032,6 +1040,8 @@ Cette config est grandement inspirée de la sienne, encore merci à lui ;)
        (add-hook 'cider-repl-mode-hook
               (lambda () (setq show-trailing-whitespace nil)))
        (add-hook 'cider-repl-mode-hook 'my/lisps-mode-hook)
+
+       (setq cider-jack-in-lein-plugins '(("cider/cider-nrepl" "0.22.0-beta8")) )
      #+END_SRC
 
 *** Scheme
