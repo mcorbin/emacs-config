@@ -1,6 +1,6 @@
-*
+/*
 
-!/lisp/setup-package.el
+!/lisp/
 !/themes/spolsky-theme.el
 !emacs.org
 !init.el
