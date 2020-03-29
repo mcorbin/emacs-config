@@ -1,19 +1,13 @@
-#+TITLE: Mathieu Corbin emacs configuration
+#+TITLE: Mathieu Corbin Emacs config
 #+AUTHOR: Mathieu Corbin
-#+EMAIL: mcorbin [at] gmail [dot] com
 
 #+begin_src
-                                                              ___ __
-    .-----.--------.---.-.----.-----.______.----.-----.-----.'  _|__|.-----.
-    |  -__|        |  _  |  __|__ --|______|  __|  _  |     |   _|  ||  _  |
-    |_____|__|__|__|___._|____|_____|      |____|_____|__|__|__| |__||___  |
-                                                                     |_____|
 
-                             In LISP We Trust
+    .-----.--------.---.-.----.-----.
+    |  -__|        |  _  |  __|__ --|
+    |_____|__|__|__|___._|____|_____|
+
 #+end_src
-
-Thx to vdemeester (https://github.com/vdemeester/emacs-config) !
-Cette config est grandement inspirée de la sienne, encore merci à lui ;)
 
 * General Configuration
 ** Appearance
@@ -22,22 +16,13 @@ Cette config est grandement inspirée de la sienne, encore merci à lui ;)
    nyan-mode is fun and pretty
 
    #+BEGIN_SRC emacs-lisp
-(setq gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3")
+     (setq gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3")
      (use-package nyan-mode
        :ensure t
        :config
        (progn
          (nyan-mode)
          (nyan-start-animation)))
-   #+END_SRC
-
-   Neotree can be useful
-
-   #+BEGIN_SRC emacs-lisp
-     (use-package neotree
-       :ensure t
-       :config
-       (global-set-key [f6] 'neotree-toggle))
    #+END_SRC
 
    Removing toolbar/menu/scrollbar...
@@ -72,6 +57,7 @@ Cette config est grandement inspirée de la sienne, encore merci à lui ;)
     #+END_SRC
 
 *** Whitespaces
+
     I want to detect trailing whitespace quickly
     #+BEGIN_SRC emacs-lisp
       (setq-default show-trailing-whitespace t)
@@ -86,17 +72,19 @@ Cette config est grandement inspirée de la sienne, encore merci à lui ;)
     (set-frame-font "DejaVu Sans Mono")
     (set-face-attribute 'default nil :family "DejaVu Sans Mono" :height 140)
    #+end_src
+
 *** Themes
 
     I load some custom themes and i display my theme only in graphic mode
     #+begin_src emacs-lisp
       (add-to-list 'custom-theme-load-path "~/.emacs.d/themes")
 
-      (if (display-graphic-p)
+     (if (display-graphic-p)
           (load-theme 'spolsky t))
     #+end_src
 
 ** General
+
    Answer y or n and not yes/no
    #+BEGIN_SRC emacs-lisp
      (fset 'yes-or-no-p 'y-or-n-p)
@@ -106,6 +94,7 @@ Cette config est grandement inspirée de la sienne, encore merci à lui ;)
      (add-hook 'text-mode-hook 'visual-line-mode)
      (add-hook 'text-mode-hook 'rainbow-delimiters-mode)
    #+END_SRC
+
 *** Encoding
 
     utf-8  by default
@@ -115,37 +104,6 @@ Cette config est grandement inspirée de la sienne, encore merci à lui ;)
       (set-keyboard-coding-system 'utf-8)
       (set-language-environment "UTF-8")
       (prefer-coding-system 'utf-8)
-    #+end_src
-*** Mouse
-    move the mouse (useful for graphical term)
-    #+begin_src emacs-lisp
-      (mouse-avoidance-mode 'jump)
-    #+end_src
-
-*** Backup files
-
-    Files suffixed with =~= in the current directory are ugly. We are still going to use
-    backup files, as it can saves some time in case of trouble, but we'll move them
-    somewhere else : ~/tmp/emacs-1001~ (for a user with the uid = 1001).
-
-    Note the we store them in /tmp so in case of a reboot, we loose them.
-
-    #+begin_src emacs-lisp
-      (defconst emacs-tmp-dir (format "%s/%s%s/" temporary-file-directory "emacs" (user-uid)))
-      (setq backup-directory-alist
-            `((".*" . ,emacs-tmp-dir))
-            auto-save-file-name-transforms
-            `((".*" ,emacs-tmp-dir t))
-            auto-save-list-file-prefix emacs-tmp-dir)
-    #+end_src
-
-    Now that all the temporary files are out of the way, we can keep more of them.
-
-    #+begin_src emacs-lisp
-      (setq delete-old-versions t
-            kept-new-versions 6
-            kept-old-versions 2
-            version-control t)
     #+end_src
 
 *** Buffers
@@ -165,42 +123,8 @@ Cette config est grandement inspirée de la sienne, encore merci à lui ;)
 
       (global-set-key (kbd "C-x k") 'kill-default-buffer)
     #+END_SRC
-*** Comment/uncomment
-    There is a cool function in emacs wich is =commend-dwim= (bounded
-    to =M-;=. This adds a comment at the right place (at the end of
-    the line, up the method, etc..
 
-    Something I'm really use to, with IntelliJ or Eclipse, is being
-    able to quickly comment a line or a region with simple
-    keystroke. If nothing is selected, it comments the current line,
-    if there is a selection, it comments the line selected (even if
-    the selection doesn't start at the beginning of line. Let's bind
-    it to =C-M-:= (=Ctrl+Alt+:=).
-
-
-    #+BEGIN_SRC emacs-lisp
-      (defun my/toggle-comments ()
-          "A modified way to toggle comments, 'à-la' ide (intelliJ, Eclipse).
-      If no region is selected, comment/uncomment the line. If a region is selected, comment/uncomment this region *but* starting from the begining of the first line of the region to the end of the last line of the region"
-        (interactive)
-        (save-excursion
-          (if (region-active-p)
-              (progn
-                (setq start (save-excursion
-                              (goto-char (region-beginning))
-                              (beginning-of-line)
-                              (point))
-                      end (save-excursion
-                            (goto-char (region-end))
-                            (end-of-line)
-                            (point)))
-                (comment-or-uncomment-region start end))
-            (progn
-              (comment-or-uncomment-region (line-beginning-position) (line-end-position)))
-            )))
-      (global-set-key (kbd "C-M-:") 'my/toggle-comments)
-    #+END_SRC
-*** formatting
+*** Formatting
 
     space instead of tabs
     #+begin_src emacs-lisp
@@ -210,6 +134,7 @@ Cette config est grandement inspirée de la sienne, encore merci à lui ;)
          "Modes for which auto-indenting is suppressed."
          :type 'list)
     #+end_src
+
 
 #+BEGIN_SRC emacs-lisp
   (defun smarter-move-beginning-of-line (arg)
@@ -239,7 +164,6 @@ Cette config est grandement inspirée de la sienne, encore merci à lui ;)
   (global-set-key [remap move-beginning-of-line]
                   'smarter-move-beginning-of-line)
 #+END_SRC
-
 *** Async
 
     =async.el= is a module for doing asynchronous processing in
@@ -257,7 +181,7 @@ Cette config est grandement inspirée de la sienne, encore merci à lui ;)
 
 *** Dired
 
-    #+BEGIN_SRC emacs-lisp
+   #+BEGIN_SRC emacs-lisp
 
       (use-package dired-x)
       (use-package dired-aux)
@@ -277,70 +201,21 @@ Cette config est grandement inspirée de la sienne, encore merci à lui ;)
         :bind ("C-=" . er/expand-region))
     #+END_SRC
 
+
 *** Zoom
     #+BEGIN_SRC emacs-lisp
       (global-set-key (kbd "C-+") 'text-scale-increase)
       (global-set-key (kbd "C--") 'text-scale-decrease)
     #+END_SRC
+
 *** scrolling
     ensure that =M-v= always undoes =C-v=, so you can go back exactly.
 
     #+BEGIN_SRC emacs-lisp
       (setq scroll-preserve-screen-position 'always)
     #+END_SRC
-*** ace windows
-    switch windows with ace-window
 
-    #+BEGIN_SRC emacs-lisp
-      (defun joe-scroll-other-window()
-        (interactive)
-        (scroll-other-window 1))
-      (defun joe-scroll-other-window-down ()
-        (interactive)
-        (scroll-other-window-down 1))
-      ;; From https://github.com/abo-abo/ace-window/wiki but adapted to bepo
-      (use-package ace-window
-        :ensure t
-        :bind (("C-x C-o" . ace-window)
-               ("C-x M-s" . avi-goto-word-1))
-        :config
-        (set-face-attribute 'aw-leading-char-face nil :foreground "deep sky blue" :weight 'bold :height 3.0)
-        (set-face-attribute 'aw-mode-line-face nil :inherit 'mode-line-buffer-id :foreground "lawn green")
-        (setq aw-keys   '(?q ?s ?d ?f ?j ?k ?l)
-              aw-dispatch-always t
-              aw-dispatch-alist
-              '((?y aw-delete-window     "Ace - Delete Window")
-                (?x aw-swap-window       "Ace - Swap Window")
-                (?\' aw-flip-window)
-                (?\. aw-split-window-vert "Ace - Split Vert Window")
-                (?c aw-split-window-horz "Ace - Split Horz Window")
-                (?n delete-other-windows "Ace - Maximize Window")
-                (?\, delete-other-windows)
-                (?u balance-windows)
-                (?v winner-undo)
-                (?o winner-redo)))
-
-        (when (package-installed-p 'hydra)
-          (defhydra hydra-window-size (:color red)
-            "Windows size"
-            ("c" shrink-window-horizontally "shrink horizontal")
-            ("t" shrink-window "shrink vertical")
-            ("s" enlarge-window "enlarge vertical")
-            ("r" enlarge-window-horizontally "enlarge horizontal"))
-          (defhydra hydra-window-frame (:color red)
-            "Frame"
-            ("e" make-frame "new frame")
-            ("y" delete-frame "delete frame"))
-          (defhydra hydra-window-scroll (:color red)
-            "Scroll other window"
-            ("'" joe-scroll-other-window "scroll")
-            ("j" joe-scroll-other-window-down "scroll down"))
-          (add-to-list 'aw-dispatch-alist '(?w hydra-window-size/body) t)
-          (add-to-list 'aw-dispatch-alist '(?l hydra-window-scroll/body) t)
-          (add-to-list 'aw-dispatch-alist '(?g hydra-window-frame/body) t))
-        (ace-window-display-mode t)
-        (winner-mode 1))
-    #+END_SRC
+*** Windows
 
 
     Use =shift + control + arrows= to change the size of windows.
@@ -353,6 +228,7 @@ Cette config est grandement inspirée de la sienne, encore merci à lui ;)
     #+END_SRC
 
 *** Popwin
+
 
     #+BEGIN_QUOTE
     popwin is a popup window manager for Emacs which makes you free
@@ -390,17 +266,6 @@ Cette config est grandement inspirée de la sienne, encore merci à lui ;)
         :bind ("C-x j" . ace-jump-mode))
     #+END_SRC
 
-*** Highlight indentation
-
-    #+BEGIN_SRC emacs-lisp
-      (use-package highlight-indentation
-        :ensure t
-        :commands (highlight-indentation-mode highlight-indentation-current-column-mode)
-        :config
-        (progn
-          (set-face-background 'highlight-indentation-face "#003308")
-          (set-face-background 'highlight-indentation-current-column-face "#003308")))
-    #+END_SRC
 *** Flycheck
     #+BEGIN_SRC emacs-lisp
       (use-package flycheck
@@ -431,7 +296,7 @@ Cette config est grandement inspirée de la sienne, encore merci à lui ;)
        (server-start))))
    #+END_SRC
 
-* Other modes
+* Other Mode
 ** Discover my major
 
    #+BEGIN_QUOTE
@@ -460,7 +325,7 @@ Cette config est grandement inspirée de la sienne, encore merci à lui ;)
    #+END_SRC
 
 ** Helm
-
+*** General
     #+BEGIN_QUOTE
     Helm is incremental completion and selection narrowing framework for Emacs. It will help steer you in the right direction when you’re looking for stuff in Emacs (like buffers, files, etc).
 
@@ -505,8 +370,6 @@ Cette config est grandement inspirée de la sienne, encore merci à lui ;)
                ("C-x C-b" . helm-buffers-list)
                ("M-y" . helm-show-kill-ring)
                ("C-x c o" . helm-occur)))
-      ;; (add-to-list 'helm-completing-read-handlers-alist '(org-refile)) ; helm-mode does not do org-refile well
-      ;; (add-to-list 'helm-completing-read-handlers-alist '(org-agenda-refile)) ; same goes for org-agenda-refile
     #+end_src
 
     Because it can be hard to remember all keybindings, let's use
@@ -524,14 +387,12 @@ Cette config est grandement inspirée de la sienne, encore merci à lui ;)
         :ensure t)
       ;; (helm-gtags-mode 1)
     #+END_SRC
-
 *** helm-make
 
     #+BEGIN_SRC emacs-lisp
       (use-package helm-make
         :ensure t)
     #+END_SRC
-
 
 *** helm-swoop
 
@@ -548,18 +409,7 @@ Cette config est grandement inspirée de la sienne, encore merci à lui ;)
           (define-key isearch-mode-map (kbd "M-i") 'helm-swoop-from-isearch)
           (define-key helm-swoop-map (kbd "M-i") 'helm-multi-swoop-all-from-helm-swoop)))
     #+END_SRC
-*** helm-google
-
-    #+BEGIN_QUOTE
-    Emacs Helm Interface for quick Google searches
-    #+END_QUOTE
-
-    #+BEGIN_SRC emacs-lisp
-      (use-package helm-google
-        :ensure t)
-    #+END_SRC
-
-** company mode
+** Company mode
    #+BEGIN_QUOTE
    company mode
    #+END_QUOTE
@@ -572,9 +422,11 @@ Cette config est grandement inspirée de la sienne, encore merci à lui ;)
    (global-set-key (kbd "TAB") #'company-indent-or-complete-common)
 
    #+END_SRC
-
 ** Version control integration
 *** Git
+
+**** General
+
     #+begin_src emacs-lisp
       (use-package gitignore-mode
         :ensure t)
@@ -590,45 +442,8 @@ Cette config est grandement inspirée de la sienne, encore merci à lui ;)
        (use-package magit
          :ensure t
          :bind ("C-c g" . magit-status))
-;;       (setq magit-last-seen-setup-instructions "1.4.0")
      #+end_src
 
-***** Magit git-svn integration
-
-      At work, I use ~git-svn~ to be able to use git locally but integrating in the
-      subversion they use. Integrating ~magit~ and ~git-svn~ is a bonus but, as it
-      exists, let's do it :).
-
-      #+begin_src emacs-lisp
-        (use-package magit-svn
-          :ensure t)
-      #+end_src
-
-      The /quick key/ to get the ~magit-svn~ menu is ~N~.
-**** git fringe decoration
-
-     #+begin_src emacs-lisp
-       (use-package git-gutter-fringe
-           :ensure t
-           :config (global-git-gutter-mode +1))
-     #+end_src emacs-lisp
-
-**** git-annex
-
-     [[http://git-annex.branchable.com/][Git-annex]] is a wonderful piece of software that I use a lot in my repositories.
-
-     #+BEGIN_QUOTE
-     git-annex allows managing files with git, without checking the file contents into git. While that may seem paradoxical, it is useful when dealing with files larger than git can currently easily handle, whether due to limitations in memory, time, or disk space.
-     #+END_QUOTE
-
-     In Emacs, it integrates with magit and dired mode. The annex subcommand for magit is ~@~.
-
-     #+begin_src emacs-lisp
-       (use-package git-annex
-         :ensure t)
-       (use-package magit-annex
-         :ensure t)
-     #+end_src
 
 **** git-timemachine
      I recently discovered an extremely cool package called git-timemachine that allows you to step though the git history of the file you’re currently editing in Emacs.
@@ -668,44 +483,9 @@ Cette config est grandement inspirée de la sienne, encore merci à lui ;)
                                                newline
                                                newline-mark))
                                  (whitespace-mode 1)))
+
+
    #+END_SRC
-
-** Org
-*** Code blocks
-
-     We are using a lot of code block in org-mode, in this file for example ; let's
-     /fontify/ the code blocks first.
-
-     #+begin_src emacs-lisp
-       (setq org-src-fontify-natively t)
-     #+end_src
-
-     Add a function to easily add a code block and bind it.
-
-     #+begin_src emacs-lisp
-              (defun my/org-insert-src-block (src-code-type)
-                "Insert a `SRC-CODE-TYPE' type source code block in org-mode."
-                (interactive
-                 (let ((src-code-types
-                        '("emacs-lisp" "python" "C" "sh" "java" "js" "clojure" "C++" "css"
-                          "calc" "dot" "gnuplot" "ledger" "R" "sass" "screen" "sql" "awk"
-                          "ditaa" "haskell" "latex" "lisp" "matlab" "org" "perl" "ruby"
-                          "sqlite" "rust" "scala" "golang")))
-                   (list (ido-completing-read "Source code type: " src-code-types))))
-                (progn
-                  (newline-and-indent)
-                  (insert (format "#+BEGIN_SRC %s\n" src-code-type))
-                  (newline-and-indent)
-                  (insert "#+END_SRC\n")
-                  (previous-line 2)
-                  (org-edit-src-code)))
-
-              (add-hook 'org-mode-hook
-                        '(lambda ()
-                           (local-set-key (kbd "C-c s e") 'org-edit-src-code)
-                           (local-set-key (kbd "C-c s i") 'my/org-insert-src-block))
-                        'append)
-     #+end_src
 
 ** multiple-cursors
 
@@ -754,108 +534,11 @@ Cette config est grandement inspirée de la sienne, encore merci à lui ;)
        :config (helm-projectile-on))
    #+END_SRC
 
-*** Perspective
-
-    [[https://github.com/nex3/perspective-el][Perspective]] is a minor mode that provides the ability to manage
-    different workspaces. It integrates well with projectile.
-
-    #+BEGIN_SRC emacs-lisp
-      (use-package perspective
-        :ensure t)
-      (use-package persp-projectile
-        :ensure t
-        :requires perspective
-        :config
-        (progn
-          (define-key projectile-mode-map (kbd "s-s") 'projectile-persp-switch-project)
-          (persp-mode)))
-    #+END_SRC
-** Compilation mode
-
-   Set options and key binding for =compile=.
-
-   #+BEGIN_SRC emacs-lisp
-     (use-package compile
-       :commands compile
-       :bind ("<f5>" . compile)
-       :config
-       (progn
-         (setq compilation-ask-about-save nil
-               compilation-always-kill t
-               compilation-scroll-output 'first-error)
-         ))
-   #+END_SRC
-
-
-*** Compilation mode improvements
-
-    See http://stackoverflow.com/questions/3072648/cucumbers-ansi-colors-messing-up-emacs-compilation-buffer
-
-
-    #+BEGIN_SRC emacs-lisp
-      (require 'ansi-color)
-      (defun my/colorize-compilation-buffer ()
-        (toggle-read-only)
-        (ansi-color-apply-on-region (point-min) (point-max))
-        (toggle-read-only))
-      (add-hook 'compilation-filter-hook 'my/colorize-compilation-buffer)
-    #+END_SRC
-
-    And let's configure the compilation-mode to follow the compilation, not waiting
-    at the top..
-
-    #+BEGIN_SRC emacs-lisp
-      (setq compilation-scroll-output t)
-    #+END_SRC
-
-** Engine mode
-
-   #+BEGIN_SRC emacs-lisp
-     (use-package engine-mode
-       :ensure t
-       :config
-       (progn
-         (engine-mode 1)
-         (defengine google
-           "http://www.google.com/search?ie=utf-8&oe=utf-8&q=%s"
-           :keybinding "g")
-         (setq engine/browser-function 'browse-url-firefox)))
-   #+END_SRC
-
 ** guru mode
 
    #+BEGIN_SRC emacs-lisp
      (use-package guru-mode
        :ensure t)
-   #+END_SRC
-
-** circe
-
-   #+BEGIN_SRC emacs-lisp
-     (use-package circe
-       :ensure t)
-
-;     (defun my-nickserv-password (_)
-;       (with-temp-buffer
-;         (insert-file-contents-literally "~/.emacs.d/private.el")
-;         (plist-get (read (buffer-string)) :nickserv-password)))
-
-     ;; foo is not my real password
-     (setq circe-network-options
-           '(("Freenode"
-              :tls t
-              :nick "mcorbin"
-              :nickserv-password "foo"
-              :port 6697
-              )))
-
-     (use-package helm-circe
-       :ensure t
-       :config
-       (progn
-         (global-set-key (kbd "C-c c i") 'helm-circe)
-         (global-set-key (kbd "C-c c n") 'helm-circe-new-activity)))
-
    #+END_SRC
 
 * Languages
@@ -909,6 +592,7 @@ Cette config est grandement inspirée de la sienne, encore merci à lui ;)
                   (eldoc-mode 1)))
     #+END_SRC
 
+
 *** Clojure
 
     Install flycheck-clj-kondo
@@ -928,31 +612,6 @@ Cette config est grandement inspirée de la sienne, encore merci à lui ;)
           (add-hook 'clojure-mode-hook 'my/lisps-mode-hook)))
     #+END_SRC
 
-    extra clojure modes
-    #+BEGIN_SRC emacs-lisp
-
-      (use-package clojure-mode-extra-font-locking
-        :ensure t)
-
-      (defvar clojure-riemann-vars
-        '("where" "tagged" "info" "streams" "with"
-          ))
-
-      (font-lock-add-keywords 'clojure-mode
-                              `((,(concat "(\\(?:\.*/\\)?"
-                                          (regexp-opt clojure-riemann-vars t)
-                                          "\\>")
-                                 1 font-lock-builtin-face)))
-    #+END_SRC
-
-    Configure CIDER for Clojurescript
-    #+BEGIN_SRC emacs-lisp
-    (setq cider-cljs-lein-repl
-      "(do (require 'figwheel-sidecar.repl-api)
-           (figwheel-sidecar.repl-api/start-figwheel!)
-           (figwheel-sidecar.repl-api/cljs-repl))")
-           
-    #+END_SRC
 **** cider
 
      Cider package with config
@@ -965,22 +624,7 @@ Cette config est grandement inspirée de la sienne, encore merci à lui ;)
        (add-hook 'cider-repl-mode-hook
               (lambda () (setq show-trailing-whitespace nil)))
        (add-hook 'cider-repl-mode-hook 'my/lisps-mode-hook)
-
-       (setq cider-jack-in-lein-plugins '(("cider/cider-nrepl" "0.22.0-beta8")) )
      #+END_SRC
-
-*** Scheme
-
-    #+BEGIN_SRC emacs-lisp
-      (use-package geiser
-        :ensure t
-        :config
-        (progn
-          (setq geiser-racket-binary "/home/mathieu/racket/bin/racket")
-          (add-hook 'scheme-mode-hook 'my/lisps-mode-hook)
-          (add-hook 'geiser-repl-mode-hook 'my/lisps-mode-hook)))
-    #+END_SRC
-
 ** S1QL
 
    By default, Emacs does not automatically truncate long lines in
@@ -1064,19 +708,10 @@ Cette config est grandement inspirée de la sienne, encore merci à lui ;)
   (defun my/python-mode-hook ()
     (add-to-list 'company-backends 'company-jedi))
 
-(defun python-shell-completion-native-try ()
-  "Return non-nil if can trigger native completion."
-  (let ((python-shell-completion-native-enable t)
-        (python-shell-completion-native-output-timeout
-         python-shell-completion-native-try-output-timeout))
-    (python-shell-completion-native-get-completions
-     (get-buffer-process (current-buffer))
-     nil "_")))
-
-
   (add-hook 'python-mode-hook 'my/python-mode-hook)
 
 #+END_SRC
+
 ** Rust
 #+BEGIN_SRC emacs-lisp
 
@@ -1125,7 +760,6 @@ Add go-mode
   (use-package go-mode
     :ensure t)
 
-  (setq flycheck-global-modes t)
 #+END_SRC
 
 And some extra packages
@@ -1149,12 +783,6 @@ And some extra packages
 
   (use-package golint
     :ensure t)
-
-  (setenv "PATH" (concat (getenv "PATH") ":/home/mathieu/prog/go/bin"))
-  (setq exec-path (append exec-path '("/home/mathieu/prog/go/bin")))
-
-  (setenv "PATH" (concat (getenv "PATH") ":/usr/local/go/bin/"))
-  (setq exec-path (append exec-path '("/usr/local/go/bin/")))
 
 #+END_SRC
 
@@ -1190,24 +818,6 @@ Setup the go-mode hook to activate gofmt on save and co.(copyright vdemeester ;)
      (use-package terraform-mode
        :ensure t)
    #+END_SRC
-** Ocaml
-   #+BEGIN_SRC emacs-lisp
-
-     (use-package tuareg
-       :ensure t)
-
-     (let ((opam-share (ignore-errors (car (process-lines "opam" "config" "var" "share")))))
-      (when (and opam-share (file-directory-p opam-share))
-       ;; Register Merlin
-       (add-to-list 'load-path (expand-file-name "emacs/site-lisp" opam-share))
-       (autoload 'merlin-mode "merlin" nil t nil)
-       ;; Automatically start it in OCaml buffers
-       (add-hook 'tuareg-mode-hook 'merlin-mode t)
-       (add-hook 'caml-mode-hook 'merlin-mode t)
-       ;; Use opam switch to lookup ocamlmerlin binary
-       (setq merlin-command 'opam)))
-
-   #+END_SRC
 ** Puppet
 
    #+BEGIN_SRC emacs-lisp
@@ -1216,3 +826,16 @@ Setup the go-mode hook to activate gofmt on save and co.(copyright vdemeester ;)
        :ensure t)
 
    #+END_SRC
+mathieu@mathieu:~/.emacs.d$ 
+mathieu@mathieu:~/.emacs.d$ 
+mathieu@mathieu:~/.emacs.d$ 
+mathieu@mathieu:~/.emacs.d$ 
+mathieu@mathieu:~/.emacs.d$ 
+mathieu@mathieu:~/.emacs.d$ 
+mathieu@mathieu:~/.emacs.d$ ls
+auto-save-list  custom.el  elpa  emacs.el  emacs.org  init.el  lisp  projectile-bookmarks.eld  snippets  themes  transient
+mathieu@mathieu:~/.emacs.d$ 
+mathieu@mathieu:~/.emacs.d$ 
+mathieu@mathieu:~/.emacs.d$ ls
+auto-save-list  custom.el  elpa  emacs.el  emacs.org  init.el  lisp  projectile-bookmarks.eld  snippets  themes  transient
+mathieu@mathieu:~/.emacs.d$ ls 
