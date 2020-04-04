@@ -124,6 +124,31 @@
       (global-set-key (kbd "C-x k") 'kill-default-buffer)
     #+END_SRC
 
+*** Backup files
+
+    Files suffixed with =~= in the current directory are ugly. We are still going to use
+    backup files, as it can saves some time in case of trouble, but we'll move them
+    somewhere else : ~/tmp/emacs-1001~ (for a user with the uid = 1001).
+
+    Note the we store them in /tmp so in case of a reboot, we loose them.
+
+    #+begin_src emacs-lisp
+      (defconst emacs-tmp-dir (format "%s/%s%s/" temporary-file-directory "emacs" (user-uid)))
+      (setq backup-directory-alist
+            `((".*" . ,emacs-tmp-dir))
+            auto-save-file-name-transforms
+            `((".*" ,emacs-tmp-dir t))
+            auto-save-list-file-prefix emacs-tmp-dir)
+    #+end_src
+
+    Now that all the temporary files are out of the way, we can keep more of them.
+
+    #+begin_src emacs-lisp
+      (setq delete-old-versions t
+            kept-new-versions 6
+            kept-old-versions 2
+            version-control t)
+    #+end_src
 *** Formatting
 
     space instead of tabs
