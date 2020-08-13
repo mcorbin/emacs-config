@@ -862,16 +862,3 @@ Setup the go-mode hook to activate gofmt on save and co.(copyright vdemeester ;)
        :ensure t)
 
    #+END_SRC
-mathieu@mathieu:~/.emacs.d$ 
-mathieu@mathieu:~/.emacs.d$ 
-mathieu@mathieu:~/.emacs.d$ 
-mathieu@mathieu:~/.emacs.d$ 
-mathieu@mathieu:~/.emacs.d$ 
-mathieu@mathieu:~/.emacs.d$ 
-mathieu@mathieu:~/.emacs.d$ ls
-auto-save-list  custom.el  elpa  emacs.el  emacs.org  init.el  lisp  projectile-bookmarks.eld  snippets  themes  transient
-mathieu@mathieu:~/.emacs.d$ 
-mathieu@mathieu:~/.emacs.d$ 
-mathieu@mathieu:~/.emacs.d$ ls
-auto-save-list  custom.el  elpa  emacs.el  emacs.org  init.el  lisp  projectile-bookmarks.eld  snippets  themes  transient
-mathieu@mathieu:~/.emacs.d$ ls 
