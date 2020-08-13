@@ -627,13 +627,24 @@
         :ensure t)
     #+END_SRC
 
+
     Clojure mode
     #+BEGIN_SRC emacs-lisp
+      ;; (defun indent-before-save ()
+      ;;    (interactive)
+      ;;    (cider-format-buffer)
+      ;;    (save-buffer))
+
+      ;; (defun mathieu-clojure-mode-hook ()
+      ;;   (add-hook 'before-save-hook 'indent-before-save))
+
       (use-package clojure-mode
-        :ensure t
+       :ensure
+        t
         :config
         (progn
           (require 'flycheck-clj-kondo)
+;          (add-hook 'clojure-mode-hook 'mathieu-clojure-mode-hook)
           (add-hook 'clojure-mode-hook 'my/lisps-mode-hook)))
     #+END_SRC
 
