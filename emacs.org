@@ -349,91 +349,87 @@
        :bind ("C-c x n" . manage-minor-mode))
    #+END_SRC
 
-** Helm
-*** General
-    #+BEGIN_QUOTE
-    Helm is incremental completion and selection narrowing framework for Emacs. It will help steer you in the right direction when you’re looking for stuff in Emacs (like buffers, files, etc).
-
-    Helm is a fork of anything.el originaly written by Tamas Patrovic and can be considered to be its successor. Helm sets out to clean up the legacy code in anything.el and provide a cleaner, leaner and more modular tool, that’s not tied in the trap of backward compatibility.
-    #+END_QUOTE
-
-    By default the /completion/ on the selected line is done by =C-z=
-    (the function is =helm-execute-persistent-action=) and =Tab= is
-    used for showing action you can do on it. Let's invert them as
-    =Tab= is used for completion in other tools (shells for example).
-
-    Let's define that all helm commands will be prefixed by =C-h=,
-    =C-h x= will be =Helm M-x=.
-
-    #+begin_src emacs-lisp
-      (use-package helm
-        :ensure t
+** selectrum and contuls
+   #+BEGIN_SRC emacs-lisp
+      (use-package selectrum-prescient
         :config
-        (progn
-          (require 'helm-config)
-          (setq helm-idle-delay 0.01
-                helm-input-idle-delay 0.01
-                helm-buffer-max-length 40
-                helm-M-x-always-save-history t
-                helm-move-to-line-cycle-in-source t
-                helm-ff-file-name-history-use-recentf t
-                ;; Enable fuzzy matching
-                helm-M-x-fuzzy-match t
-                helm-buffers-fuzzy-matching t
-                helm-recentf-fuzzy-match t)
-          (add-to-list 'helm-sources-using-default-as-input 'helm-source-man-pages)
-          ;; Rebind actions
-          (define-key helm-map (kbd "<tab>") 'helm-execute-persistent-action)
-          (define-key helm-map (kbd "C-i") 'helm-execute-persistent-action)
-          (define-key helm-map (kbd "C-z") 'helm-select-action)
-          (helm-autoresize-mode t)
-          (helm-mode 1))
-        :bind (("C-c h" . helm-command-prefix)
-               ("C-x C-f" . helm-find-files)
-               ("M-x" . helm-M-x)
-               ("C-c b" . helm-mini)
-               ("C-x C-b" . helm-buffers-list)
-               ("M-y" . helm-show-kill-ring)
-               ("C-x c o" . helm-occur)))
-    #+end_src
+        (prescient-persist-mode +1))
 
-    Because it can be hard to remember all keybindings, let's use
-    =helm-descbinds=.
+     (use-package selectrum
+       :preface (declare-function selectrum-insert-or-submit-current-candidate nil)
+       :init
+       (defun selectrum-insert-or-submit-current-candidate ()
+         "Insert current candidate depending, or forward to
+     `selectrum-select-current-candidate' if input text hasn't changed since
+     last completion
+     Similar to ivy's `ivy-partial-or-done'."
+         (interactive)
+         (progn
+           (let ((prev-input (selectrum-get-current-input)))
+             (when (> (length (selectrum-get-current-candidates)) 0)
+               (selectrum-insert-current-candidate))
+             (when (string= prev-input (selectrum-get-current-input))
+               (selectrum-select-current-candidate)))))
+       :config
+       (selectrum-mode +1)
+       ;; to make sorting and filtering more intelligent
+       (selectrum-prescient-mode +1)
+       ;; to save your command history on disk, so the sorting gets more
+       ;; intelligent over time
+       ;; (prescient-persist-mode +1)
+       (setq selectrum-count-style 'current/matches)
+       (setq selectrum-num-candidates-displayed 21)
+       :bind ((:map selectrum-minibuffer-map
+                    ("TAB" . selectrum-insert-or-submit-current-candidate)
+                    ("C-c C-o" . embark-export))))
 
-    #+BEGIN_SRC emacs-lisp
-      (use-package helm-descbinds
-        :ensure t
-        :defer t
-        :bind ("C-h b" . helm-descbinds))
-    #+END_SRC
+     (use-package consult
+       :after erc
+       :config
+       ;; Optionally configure a function which returns the project root directory
+       (autoload 'projectile-project-root "projectile")
+       (setq consult-project-root-function #'projectile-project-root)
 
-    #+BEGIN_SRC emacs-lisp
-      (use-package helm-gtags
-        :ensure t)
-      ;; (helm-gtags-mode 1)
-    #+END_SRC
-*** helm-make
+       :bind (("C-t" . consult-line)
+              ("M-g M-g" . consult-goto-line)
+              ("C-x C-SPC" . consult-global-mark)
+              ("C-c C-SPC" . consult-mark)
+              ("C-x C-g" . consult-grep)))
 
-    #+BEGIN_SRC emacs-lisp
-      (use-package helm-make
-        :ensure t)
-    #+END_SRC
+     (use-package consult-flycheck
+       :after consult
+       :config
+       (setq flycheck-display-errors-delay 0.5)
+       :bind (("C-x C-l" . consult-flycheck)
+              ("C-x l" . consult-flycheck)))
 
-*** helm-swoop
+     (use-package embark
+       :config
+       (defun refresh-selectrum ()
+         (setq selectrum--previous-input-string nil))
+       (add-hook 'embark-pre-action-hook #'refresh-selectrum)
+       (add-hook 'embark-post-action-hook #'embark-collect--update-linked)
+       (add-hook 'embark-collect-post-revert-hook
+                 (defun resize-embark-collect-window (&rest _)
+                   (when (memq embark-collect--kind '(:live :completions))
+                     (fit-window-to-buffer (get-buffer-window)
+                                           (floor (frame-height) 2) 1)))))
 
-    =helm-swoop= is a great Helm powered buffer search/occur interface:
+     (use-package embark-consult
+       :ensure t
+       :after (embark consult)
+       :demand t ; only necessary if you have the hook below
+       ;; if you want to have consult previews as you move around an
+       ;; auto-updating embark collect buffer
+       :hook
+       (embark-collect-mode . embark-consult-preview-minor-mode))
 
-    #+BEGIN_SRC emacs-lisp
-      (use-package helm-swoop
-        :ensure t
-        :defer t
-        :bind (("C-S-s" . helm-swoop)
-               ("M-I" . helm-swoop-back-to-last-point))
-        :config
-        (progn
-          (define-key isearch-mode-map (kbd "M-i") 'helm-swoop-from-isearch)
-          (define-key helm-swoop-map (kbd "M-i") 'helm-multi-swoop-all-from-helm-swoop)))
-    #+END_SRC
+     (use-package marginalia
+       :after consult
+       :init
+       (marginalia-mode)
+       (setq marginalia-annotators '(marginalia-annotators-heavy)))
+   #+END_SRC
 ** Company mode
    #+BEGIN_QUOTE
    company mode
@@ -546,17 +542,17 @@
        (progn
          (setq projectile-completion-system 'default)
          (setq projectile-enable-caching nil)
+         (defun refresh-selectrum ()
+           (setq selectrum--previous-input-string nil))
+         (add-hook 'embark-pre-action-hook #'refresh-selectrum)
          (define-key projectile-mode-map (kbd "s-p") 'projectile-command-map)
          (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
          (projectile-global-mode)))
    #+END_SRC
 
-   And let's use the helm integration too.
 
    #+BEGIN_SRC emacs-lisp
-     (use-package helm-projectile
-       :ensure t
-       :config (helm-projectile-on))
+
    #+END_SRC
 
 ** guru mode
