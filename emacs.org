@@ -68,7 +68,6 @@
 
    I use Monospace font.
    #+begin_src emacs-lisp
-    (set-default-font "DejaVu Sans Mono")
     (set-frame-font "DejaVu Sans Mono")
     (set-face-attribute 'default nil :family "DejaVu Sans Mono" :height 140)
    #+end_src
@@ -446,17 +445,6 @@
 ** Version control integration
 *** Git
 
-**** General
-
-    #+begin_src emacs-lisp
-      (use-package gitignore-mode
-        :ensure t)
-      (use-package gitconfig-mode
-        :ensure t)
-      (use-package gitattributes-mode
-        :ensure t)
-    #+end_src
-
 **** magit
 
      #+begin_src emacs-lisp
@@ -678,8 +666,6 @@
 
    #+BEGIN_SRC emacs-lisp
      (use-package markdown-mode
-       :ensure t)
-     (use-package markdown-mode+
        :ensure t)
    #+END_SRC
 

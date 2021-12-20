@@ -1,21 +1,17 @@
-;; Bootstrap 'use-package
 (require 'package)
+
 (setq package-enable-at-startup nil)
 
 (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/"))
 
-(package-initialize)
 
 (unless (package-installed-p 'use-package)
   (package-refresh-contents)
   (package-install 'use-package))
 
-(package-initialize nil)
 ;; Add custom lisp files to the load-path
 (add-to-list 'load-path "~/.emacs.d/lisp")
-(package-initialize nil)
 
-;(require 'vde-functions)
 ;; initialize all ELPA packages
 (require 'setup-package)
 
