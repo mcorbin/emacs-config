@@ -802,7 +802,7 @@ And some extra packages
 
 #+END_SRC
 
-Setup the go-mode hook to activate gofmt on save and co.(copyright vdemeester ;))
+Setup the go-mode hooks
 
 #+BEGIN_SRC emacs-lisp
 
