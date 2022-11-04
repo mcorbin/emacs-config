@@ -554,7 +554,9 @@
 
    #+BEGIN_SRC emacs-lisp
      (use-package lsp-mode
-       :ensure t)
+       :ensure t
+       :config
+       (define-key lsp-mode-map (kbd "C-c l") lsp-command-map))
 
      (use-package lsp-ui
        :ensure t)
