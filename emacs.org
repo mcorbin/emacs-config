@@ -550,6 +550,16 @@
        :ensure t)
    #+END_SRC
 
+** lsp mode
+
+   #+BEGIN_SRC emacs-lisp
+     (use-package lsp-mode
+       :ensure t)
+
+     (use-package lsp-ui
+       :ensure t)
+   #+END_SRC
+
 * Languages
 ** Lua
 
@@ -769,10 +779,10 @@ Add go-mode
 
   ;; this is from https://github.com/vincentbernat/dot.emacs
 
-  (setenv "GOPATH" "/home/mathieu/prog/go")
+  (setenv "GOPATH" "/home/mcorbin/prog/go")
 
-  (setenv "PATH" (concat (getenv "PATH") ":/home/mathieu/prog/go/bin:/usr/local/go/bin"))
-  (setq exec-path (append exec-path '("/home/mathieu/prog/go/bin")))
+  (setenv "PATH" (concat (getenv "PATH") ":/home/mcorbin/prog/go/bin:/usr/local/go/bin"))
+  (setq exec-path (append exec-path '("/home/mcorbin/prog/go/bin")))
   (setq exec-path (append exec-path '("/usr/local/go/bin")))
 
   (use-package go-mode
@@ -783,10 +793,6 @@ Add go-mode
 And some extra packages
 
 #+BEGIN_SRC emacs-lisp
-
-  (use-package company-go
-    :ensure t
-    :config (add-to-list 'company-backends 'company-go))
 
   (use-package gotest
     :ensure t
@@ -799,7 +805,7 @@ And some extra packages
     (bind-key "C-c t b" 'go-test-current-benchmark go-mode-map)
     (bind-key "C-c t C-g b" 'go-test-current-project-benchmarks go-mode-map))
 
-  (use-package golint
+    (use-package flycheck-golangci-lint
     :ensure t)
 
 #+END_SRC
@@ -808,13 +814,29 @@ Setup the go-mode hook to activate gofmt on save and co.(copyright vdemeester ;)
 
 #+BEGIN_SRC emacs-lisp
 
+(defvar-local flycheck-local-checkers nil)
+  (defun +flycheck-checker-get(fn checker property)
+    (or (alist-get property (alist-get checker flycheck-local-checkers))
+        (funcall fn checker property)))
+  (advice-add 'flycheck-checker-get :around '+flycheck-checker-get)
+
 (defun my-go-mode-hook ()
   (setq gofmt-command "gofmt")
+  (flycheck-golangci-lint-setup)
+  (setq flycheck-local-checkers '((lsp . ((next-checkers . (golangci-lint))))))
   (add-hook 'before-save-hook 'gofmt-before-save)
   (if (not (string-match "go" compile-command))
       (set (make-local-variable 'compile-command)
            "go build -v && go test -v && go vet")))
+
+(defun lsp-go-install-save-hooks ()
+  (add-hook 'before-save-hook #'lsp-format-buffer t t)
+  (add-hook 'before-save-hook #'lsp-organize-imports t t))
+
+
+(add-hook 'go-mode-hook #'lsp-go-install-save-hooks)
 (add-hook 'go-mode-hook 'my-go-mode-hook)
+(add-hook 'go-mode-hook #'lsp-deferred)
 
 #+END_SRC
 
