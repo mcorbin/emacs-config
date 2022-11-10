@@ -35,6 +35,11 @@
    #+end_src
 
    #+BEGIN_SRC emacs-lisp
+
+  (setq mac-option-modifier nil
+        mac-command-modifier 'meta
+        x-select-enable-clipboard t)
+
      (line-number-mode 1)
      (column-number-mode 1)
      (global-hl-line-mode 1)
@@ -68,8 +73,10 @@
 
    I use Monospace font.
    #+begin_src emacs-lisp
-    (set-frame-font "DejaVu Sans Mono")
-    (set-face-attribute 'default nil :family "DejaVu Sans Mono" :height 140)
+            ;; (set-frame-font "DejaVu Sans Mono")
+     (if (string= system-type "darwin")
+       (set-face-attribute 'default nil :height 140)
+       (set-frame-font "DejaVu Sans Mono"))
    #+end_src
 
 *** Themes
@@ -207,10 +214,13 @@
 
    #+BEGIN_SRC emacs-lisp
 
-      (use-package dired-x)
-      (use-package dired-aux)
+     (use-package dired-x)
+     (use-package dired-aux)
 
-      (setq dired-listing-switches "-laGh1v --group-directories-first")
+     (when (string= system-type "darwin")
+       (setq dired-use-ls-dired nil))
+
+     (setq dired-listing-switches "-laGh1v")
 
 
     #+END_SRC
@@ -769,16 +779,22 @@
 Add go-mode
 #+BEGIN_SRC emacs-lisp
 
-  ;; this is from https://github.com/vincentbernat/dot.emacs
+  (if (string= system-type "darwin")
+    (progn
+        (setenv "GOPATH" "/Users/mathieucorbin/go")
+        (setenv "PATH" (concat (getenv "PATH") ":/Users/mathieucorbin/go/bin:/usr/local/go/bin"))
+        (setenv "PATH" (concat (getenv "PATH") ":/usr/local/bin"))
+        (setq exec-path (append exec-path '("/Users/mathieucorbin/go/bin"))))
+    (progn
+      (setenv "GOPATH" "/home/mcorbin/prog/go")
+      (setenv "PATH" (concat (getenv "PATH") ":/home/mcorbin/prog/go/bin:/usr/local/go/bin"))
+      (setq exec-path (append exec-path '("/home/mcorbin/prog/go/bin")))))
 
-  (setenv "GOPATH" "/home/mcorbin/prog/go")
-
-  (setenv "PATH" (concat (getenv "PATH") ":/home/mcorbin/prog/go/bin:/usr/local/go/bin"))
-  (setq exec-path (append exec-path '("/home/mcorbin/prog/go/bin")))
   (setq exec-path (append exec-path '("/usr/local/go/bin")))
+  (setq exec-path (append exec-path '("/usr/local/bin")))
 
-  (use-package go-mode
-    :ensure t)
+    (use-package go-mode
+      :ensure t)
 
 #+END_SRC
 
