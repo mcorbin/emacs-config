@@ -634,7 +634,7 @@
 
 
     Clojure mode
-
+    #+BEGIN_SRC emacs-lisp
       (use-package clojure-mode
        :ensure
         t
