@@ -73,10 +73,11 @@
 
    I use Monospace font.
    #+begin_src emacs-lisp
-            ;; (set-frame-font "DejaVu Sans Mono")
+	    ;; (set-frame-font "DejaVu Sans Mono")
      (if (string= system-type "darwin")
        (set-face-attribute 'default nil :height 140)
-       (set-frame-font "DejaVu Sans Mono"))
+       (progn (set-frame-font "DejaVu Sans Mono")
+              (set-face-attribute 'default nil :height 140)))
    #+end_src
 
 *** Themes
@@ -250,7 +251,6 @@
     #+END_SRC
 
 *** Windows
-
 
     Use =shift + control + arrows= to change the size of windows.
 
@@ -786,9 +786,9 @@ Add go-mode
         (setenv "PATH" (concat (getenv "PATH") ":/usr/local/bin"))
         (setq exec-path (append exec-path '("/Users/mathieucorbin/go/bin"))))
     (progn
-      (setenv "GOPATH" "/home/mcorbin/prog/go")
-      (setenv "PATH" (concat (getenv "PATH") ":/home/mcorbin/prog/go/bin:/usr/local/go/bin"))
-      (setq exec-path (append exec-path '("/home/mcorbin/prog/go/bin")))))
+      (setenv "GOPATH" "/home/mcorbin/go")
+      (setenv "PATH" (concat (getenv "PATH") ":/home/mcorbin/go/bin:/usr/local/go/bin"))
+      (setq exec-path (append exec-path '("/home/mcorbin/go/bin")))))
 
   (setq exec-path (append exec-path '("/usr/local/go/bin")))
   (setq exec-path (append exec-path '("/usr/local/bin")))
@@ -873,4 +873,72 @@ Setup the go-mode hooks
      (use-package puppet-mode
        :ensure t)
 
+   #+END_SRC
+
+** Nix
+
+   #+BEGIN_SRC emacs-lisp
+     (use-package nix-mode
+       :ensure t
+       :mode "\\.nix\\'")
+   #+END_SRC
+
+** Vue JS
+
+   #+BEGIN_SRC emacs-lisp
+     (use-package vue-mode
+       :ensure t)
+
+   #+END_SRC
+* MaizAI
+
+   #+BEGIN_SRC emacs-lisp
+
+   (defun maizai-complete-buffer ()
+     "complete the code using the whole buffer as input"
+     (interactive)
+     (let ((command (concat "complete-buffer.sh 'Complete this file:' "
+                            (buffer-file-name)
+                            " "
+                            maizaiContext)))
+       (progn
+         (message "%s" command)
+         (async-shell-command command))))
+
+    (defun maizai-complete-prompt-buffer ()
+      "generates content based on the current buffer and a prompt"
+      (interactive)
+      (let ((prompt (read-string "prompt: ")))
+        (let ((command (concat "complete-buffer.sh "
+                               (format "'%s'" prompt)
+                               " "
+                               (buffer-file-name)
+                               " "
+                               maizaiContext)))
+          (progn
+            (async-shell-command command)))))
+
+    (defun maizai-add-buffer-context ()
+      "Add the current buffer into the configure context"
+      (interactive)
+      (let ((command (concat "/home/mcorbin/.local/maizai/add-file-context.sh "
+                             maizaiContext
+                             " "
+                             (buffer-file-name))))
+        (progn
+          (message "%s" command)
+          (shell-command command))))
+
+    (defun maizai-switch-context ()
+    "Switches to another context"
+    (interactive)
+    (let ((context (read-string "context: ")))
+      (setq maizaiContext context)))
+
+   (setq maizaiContext "")
+
+   (global-set-key (kbd "C-c a c") 'maizai-async-complete-buffer)
+   (global-set-key (kbd "C-c a p") 'maizai-async-complete-prompt-buffer)
+   (global-set-key (kbd "C-c a s") 'maizai-switch-context)
+   (global-set-key (kbd "C-c a f") 'maizai-add-buffer-context)
    #+END_SRC
