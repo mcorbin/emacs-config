@@ -897,10 +897,14 @@ Setup the go-mode hooks
    (defun maizai-complete-buffer ()
      "complete the code using the whole buffer as input"
      (interactive)
-     (let ((command (concat "complete-buffer.sh 'Complete this file:' "
-                            (buffer-file-name)
-                            " "
-                            maizaiContext)))
+     (let ((command (concat
+                     "PASS_FILE_CONTENT=true"
+                     " PROVIDER=" maizaiProvider
+                     " MODEL=" maizaiModel
+                     " SOURCE_CONTEXT=" maizaiContext
+                      " complete-buffer.sh 'Complete this file:' "
+                      (buffer-file-name))
+             ))
        (progn
          (message "%s" command)
          (async-shell-command command))))
@@ -909,19 +913,33 @@ Setup the go-mode hooks
       "generates content based on the current buffer and a prompt"
       (interactive)
       (let ((prompt (read-string "prompt: ")))
-        (let ((command (concat "complete-buffer.sh "
-                               (format "'%s'" prompt)
-                               " "
-                               (buffer-file-name)
-                               " "
-                               maizaiContext)))
+        (let ((command (concat
+                        " PASS_FILE_CONTENT=true"
+                        " PROVIDER=" maizaiProvider
+                        " MODEL=" maizaiModel
+                        " SOURCE_CONTEXT=" maizaiContext
+                        (format " /home/mcorbin/appclacks/maizAI/poc/complete-buffer.sh '%s' %s" prompt (buffer-file-name)))))
+          (progn
+            (message "%s" command)
+            (async-shell-command command)))))
+
+    (defun maizai-prompt ()
+      "generates content based a prompt and put it into the current buffer"
+      (interactive)
+      (let ((prompt (read-string "prompt: ")))
+        (let ((command (concat
+                        " PROVIDER=" maizaiProvider
+                        " MODEL=" maizaiModel
+                        " SOURCE_CONTEXT=" maizaiContext
+                        " /home/mcorbin/appclacks/maizAI/poc/complete-buffer.sh " (format "'%s' " prompt)
+                        (buffer-file-name))))
           (progn
             (async-shell-command command)))))
 
     (defun maizai-add-buffer-context ()
       "Add the current buffer into the configure context"
       (interactive)
-      (let ((command (concat "/home/mcorbin/.local/maizai/add-file-context.sh "
+      (let ((command (concat "/home/mcorbin/appclacks/maizAI/poc/add-file-context.sh "
                              maizaiContext
                              " "
                              (buffer-file-name))))
@@ -935,10 +953,26 @@ Setup the go-mode hooks
     (let ((context (read-string "context: ")))
       (setq maizaiContext context)))
 
-   (setq maizaiContext "")
+    (defun maizai-switch-model ()
+    "Switches to another model"
+    (interactive)
+    (let ((model (read-string "model: ")))
+      (setq maizaiModel model)))
 
-   (global-set-key (kbd "C-c a c") 'maizai-async-complete-buffer)
-   (global-set-key (kbd "C-c a p") 'maizai-async-complete-prompt-buffer)
+    (defun maizai-switch-provider ()
+    "Switches to another provider"
+    (interactive)
+    (let ((model (read-string "provider: ")))
+      (setq maizaiProvider provider)))
+
+   (setq maizaiContext "example")
+   (setq maizaiProvider "anthropic")
+   (setq maizaiModel "claude-3-7-sonnet-latest")
+
+   (global-set-key (kbd "C-c a c") 'maizai-complete-buffer)
+   (global-set-key (kbd "C-c a b") 'maizai-complete-prompt-buffer)
+   (global-set-key (kbd "C-c a p") 'maizai-prompt)
    (global-set-key (kbd "C-c a s") 'maizai-switch-context)
    (global-set-key (kbd "C-c a f") 'maizai-add-buffer-context)
+
    #+END_SRC
