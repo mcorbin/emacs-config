@@ -565,6 +565,7 @@
    #+BEGIN_SRC emacs-lisp
      (use-package lsp-mode
        :ensure t
+       :hook ((python-mode . lsp))
        :config
        (define-key lsp-mode-map (kbd "C-c l") lsp-command-map))
 
@@ -720,25 +721,69 @@
 ** Python
 #+BEGIN_SRC emacs-lisp
 
+     ;; pip install --upgrade pyflakes rope mccabe pycodestyle yapf flake8 pylint
+     ;; uv tool install rope
+  ;;  uv tool install mccabe
+  ;; uv tool install pycodestyle
+  ;;  uv tool install yapf
+  ;;  uv tool install flake8
+  ;;  uv tool install pylint
+  ;;  uv tool install jedi
+  ;;    ;;
+ ;; pip install python-lsp-server
+     ;; (use-package elpy
+     ;;   :ensure t
+     ;;   :init
+     ;;   (progn
+     ;;     (setq elpy-rpc-python-command "python3")
+     ;;     (elpy-enable)))
 
-  (use-package elpy
-    :ensure t
-    :init
-    (progn
-      (setq elpy-rpc-python-command "python3")
-      (elpy-enable)))
-
-  (use-package jedi-core
-    :ensure t)
+     (use-package jedi-core
+       :ensure t)
 
 
-  (use-package company-jedi
-    :ensure t)
+     (use-package company-jedi
+        :ensure t)
 
-  (defun my/python-mode-hook ()
-    (add-to-list 'company-backends 'company-jedi))
+     (defun my/python-mode-hook ()
+       (add-to-list 'company-backends 'company-jedi))
 
-  (add-hook 'python-mode-hook 'my/python-mode-hook)
+     (add-hook 'python-mode-hook 'my/python-mode-hook)
+
+   (defun uv-activate ()
+     "Activate Python environment managed by uv based on current project directory.
+   Looks for .venv directory in project root and activates the Python interpreter."
+     (interactive)
+     (let* ((project-root (project-root (project-current t)))
+            (venv-path (expand-file-name ".venv" project-root))
+            (python-path (expand-file-name
+                          (if (eq system-type 'windows-nt)
+                              "Scripts/python.exe"
+                            "bin/python")
+                          venv-path)))
+       (if (file-exists-p python-path)
+           (progn
+             ;; Set Python interpreter path
+             (setq python-shell-interpreter python-path)
+
+             ;; Update exec-path to include the venv's bin directory
+             (let ((venv-bin-dir (file-name-directory python-path)))
+               (setq exec-path (cons venv-bin-dir
+                                     (remove venv-bin-dir exec-path))))
+
+             ;; Update PATH environment variable
+             (setenv "PATH" (concat (file-name-directory python-path)
+                                    path-separator
+                                    (getenv "PATH")))
+
+             ;; Update VIRTUAL_ENV environment variable
+             (setenv "VIRTUAL_ENV" venv-path)
+
+             ;; Remove PYTHONHOME if it exists
+             (setenv "PYTHONHOME" nil)
+
+             (message "Activated UV Python environment at %s" venv-path))
+         (error "No UV Python environment found in %s" project-root))))
 
 #+END_SRC
 
@@ -894,85 +939,88 @@ Setup the go-mode hooks
 
    #+BEGIN_SRC emacs-lisp
 
-   (defun maizai-complete-buffer ()
-     "complete the code using the whole buffer as input"
-     (interactive)
-     (let ((command (concat
-                     "PASS_FILE_CONTENT=true"
-                     " PROVIDER=" maizaiProvider
-                     " MODEL=" maizaiModel
-                     " SOURCE_CONTEXT=" maizaiContext
-                      " complete-buffer.sh 'Complete this file:' "
-                      (buffer-file-name))
-             ))
-       (progn
-         (message "%s" command)
-         (async-shell-command command))))
+     ;; (defun maizai-complete-buffer ()
+     ;;   "complete the code using the whole buffer as input"
+     ;;   (interactive)
+     ;;   (let ((command (concat
+     ;;                   "PASS_FILE_CONTENT=true"
+     ;;                   " PROVIDER=" maizaiProvider
+     ;;                   " MODEL=" maizaiModel
+     ;;                   " SOURCE_CONTEXT=" maizaiContext
+     ;;                    " complete-buffer.sh 'Complete this file:' "
+     ;;                    (buffer-file-name))
+     ;;           ))
+     ;;     (progn
+     ;;       (message "%s" command)
+     ;;       (async-shell-command command))))
 
-    (defun maizai-complete-prompt-buffer ()
-      "generates content based on the current buffer and a prompt"
-      (interactive)
-      (let ((prompt (read-string "prompt: ")))
-        (let ((command (concat
-                        " PASS_FILE_CONTENT=true"
-                        " PROVIDER=" maizaiProvider
-                        " MODEL=" maizaiModel
-                        " SOURCE_CONTEXT=" maizaiContext
-                        (format " /home/mcorbin/appclacks/maizAI/poc/complete-buffer.sh '%s' %s" prompt (buffer-file-name)))))
-          (progn
-            (message "%s" command)
-            (async-shell-command command)))))
+     ;;  (defun maizai-complete-prompt-buffer ()
+     ;;    "generates content based on the current buffer and a prompt"
+     ;;    (interactive)
+     ;;    (let ((prompt (read-string "prompt: ")))
+     ;;      (let ((command (concat
+     ;;                      " PASS_FILE_CONTENT=true"
+     ;;                      " PROVIDER=" maizaiProvider
+     ;;                      " MODEL=" maizaiModel
+     ;;                      " SOURCE_CONTEXT=" maizaiContext
+     ;;                      (format " /home/mcorbin/appclacks/maizAI/poc/complete-buffer.sh '%s' %s" prompt (buffer-file-name)))))
+     ;;        (progn
+     ;;          (message "%s" command)
+     ;;          (async-shell-command command)))))
 
-    (defun maizai-prompt ()
-      "generates content based a prompt and put it into the current buffer"
-      (interactive)
-      (let ((prompt (read-string "prompt: ")))
-        (let ((command (concat
-                        " PROVIDER=" maizaiProvider
-                        " MODEL=" maizaiModel
-                        " SOURCE_CONTEXT=" maizaiContext
-                        " /home/mcorbin/appclacks/maizAI/poc/complete-buffer.sh " (format "'%s' " prompt)
-                        (buffer-file-name))))
-          (progn
-            (async-shell-command command)))))
+     ;;  (defun maizai-prompt ()
+     ;;    "generates content based a prompt and put it into the current buffer"
+     ;;    (interactive)
+     ;;    (let ((prompt (read-string "prompt: ")))
+     ;;      (let ((command (concat
+     ;;                      " PROVIDER=" maizaiProvider
+     ;;                      " MODEL=" maizaiModel
+     ;;                      " SOURCE_CONTEXT=" maizaiContext
+     ;;                      " /home/mcorbin/appclacks/maizAI/poc/complete-buffer.sh " (format "'%s' " prompt)
+     ;;                      (buffer-file-name))))
+     ;;        (progn
+     ;;          (async-shell-command command)))))
 
-    (defun maizai-add-buffer-context ()
-      "Add the current buffer into the configure context"
-      (interactive)
-      (let ((command (concat "/home/mcorbin/appclacks/maizAI/poc/add-file-context.sh "
-                             maizaiContext
-                             " "
-                             (buffer-file-name))))
-        (progn
-          (message "%s" command)
-          (shell-command command))))
+     ;;  (defun maizai-add-buffer-context ()
+     ;;    "Add the current buffer into the configure context"
+     ;;    (interactive)
+     ;;    (let ((command (concat "/home/mcorbin/appclacks/maizAI/poc/add-file-context.sh "
+     ;;                           maizaiContext
+     ;;                           " "
+     ;;                           (buffer-file-name))))
+     ;;      (progn
+     ;;        (message "%s" command)
+     ;;        (shell-command command))))
 
-    (defun maizai-switch-context ()
-    "Switches to another context"
-    (interactive)
-    (let ((context (read-string "context: ")))
-      (setq maizaiContext context)))
+     ;;  (defun maizai-switch-context ()
+     ;;  "Switches to another context"
+     ;;  (interactive)
+     ;;  (let ((context (read-string "context: ")))
+     ;;    (setq maizaiContext context)
+     ;;    (message "switched to context %s" context)))
 
-    (defun maizai-switch-model ()
-    "Switches to another model"
-    (interactive)
-    (let ((model (read-string "model: ")))
-      (setq maizaiModel model)))
+     ;;  (defun maizai-switch-model ()
+     ;;  "Switches to another model"
+     ;;  (interactive)
+     ;;  (let ((model (read-string "model: ")))
+     ;;    (setq maizaiModel model)
+     ;;    (message "switched to model %s" model)))
 
-    (defun maizai-switch-provider ()
-    "Switches to another provider"
-    (interactive)
-    (let ((model (read-string "provider: ")))
-      (setq maizaiProvider provider)))
+     ;;  (defun maizai-switch-provider ()
+     ;;  "Switches to another provider"
+     ;;  (interactive)
+     ;;  (let ((provider (read-string "provider: ")))
+     ;;    (setq maizaiProvider provider)
+     ;;    (message "switched to provider %s" provider)))
 
-   (setq maizaiContext "example")
-   (setq maizaiProvider "anthropic")
-   (setq maizaiModel "claude-3-7-sonnet-latest")
+     ;; (setq maizaiContext "example")
+     ;; (setq maizaiProvider "anthropic")
+     ;; (setq maizaiModel "claude-3-7-sonnet-latest")
 
-   (global-set-key (kbd "C-c a c") 'maizai-complete-buffer)
-   (global-set-key (kbd "C-c a b") 'maizai-complete-prompt-buffer)
-   (global-set-key (kbd "C-c a p") 'maizai-prompt)
-   (global-set-key (kbd "C-c a s") 'maizai-switch-context)
-   (global-set-key (kbd "C-c a f") 'maizai-add-buffer-context)
+     ;; (global-set-key (kbd "C-c a c") 'maizai-complete-buffer)
+     ;; (global-set-key (kbd "C-c a b") 'maizai-complete-prompt-buffer)
+     ;; (global-set-key (kbd "C-c a p") 'maizai-prompt)
+     ;; (global-set-key (kbd "C-c a s") 'maizai-switch-context)
+     ;; (global-set-key (kbd "C-c a f") 'maizai-add-buffer-context)
 
    #+END_SRC
