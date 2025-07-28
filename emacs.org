@@ -560,18 +560,6 @@
        :ensure t)
    #+END_SRC
 
-** lsp mode
-
-   #+BEGIN_SRC emacs-lisp
-     (use-package lsp-mode
-       :ensure t
-       :hook ((python-mode . lsp))
-       :config
-       (define-key lsp-mode-map (kbd "C-c l") lsp-command-map))
-
-     (use-package lsp-ui
-       :ensure t)
-   #+END_SRC
 
 * Languages
 ** Lua
@@ -721,8 +709,12 @@
 ** Python
 #+BEGIN_SRC emacs-lisp
 
-      ;; pip install --upgrade pyflakes rope mccabe pycodestyle yapf flake8 pylint
-      ;; uv tool install rope
+      ;; pip install --user --upgrade pyflakes rope mccabe pycodestyle yapf flake8 pylint jedi black 'python-lsp-server[all]'
+
+  ;; pip install 'python-lsp-server[all]'
+  ;; pip install pylsp-mypy
+  ;; pip install python-lsp-black
+  ;; uv tool install rope
    ;;  uv tool install mccabe
    ;; uv tool install pycodestyle
    ;;  uv tool install yapf
@@ -750,6 +742,15 @@
 
     ;;   (add-hook 'python-mode-hook 'my/python-mode-hook)
 
+     (setq lsp-pylsp-plugins-black-enabled 't)
+
+    (use-package pyvenv
+      :config
+      (pyvenv-mode 1))
+
+    (setenv "PATH" (concat (getenv "PATH") ":~/.local/bin"))
+    (setq exec-path (append exec-path '("~/.local/bin")))
+  
      (defun uv-activate ()
       "Activate Python environment managed by uv based on current project directory.
     Looks for .venv directory in project root and activates the Python interpreter."
@@ -1023,4 +1024,17 @@ Setup the go-mode hooks
      ;; (global-set-key (kbd "C-c a s") 'maizai-switch-context)
      ;; (global-set-key (kbd "C-c a f") 'maizai-add-buffer-context)
 
+   #+END_SRC
+
+** lsp mode
+
+   #+BEGIN_SRC emacs-lisp
+     (use-package lsp-mode
+       :ensure t
+       :hook (python-mode . lsp-deferred)
+       :config
+       (define-key lsp-mode-map (kbd "C-c l") lsp-command-map))
+
+     (use-package lsp-ui
+       :ensure t)
    #+END_SRC
