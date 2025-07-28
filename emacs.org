@@ -721,69 +721,69 @@
 ** Python
 #+BEGIN_SRC emacs-lisp
 
-     ;; pip install --upgrade pyflakes rope mccabe pycodestyle yapf flake8 pylint
-     ;; uv tool install rope
-  ;;  uv tool install mccabe
-  ;; uv tool install pycodestyle
-  ;;  uv tool install yapf
-  ;;  uv tool install flake8
-  ;;  uv tool install pylint
-  ;;  uv tool install jedi
-  ;;    ;;
- ;; pip install python-lsp-server
-     ;; (use-package elpy
-     ;;   :ensure t
-     ;;   :init
-     ;;   (progn
-     ;;     (setq elpy-rpc-python-command "python3")
-     ;;     (elpy-enable)))
+      ;; pip install --upgrade pyflakes rope mccabe pycodestyle yapf flake8 pylint
+      ;; uv tool install rope
+   ;;  uv tool install mccabe
+   ;; uv tool install pycodestyle
+   ;;  uv tool install yapf
+   ;;  uv tool install flake8
+   ;;  uv tool install pylint
+   ;;  uv tool install jedi
+   ;;    ;;
+  ;; pip install python-lsp-server
+      ;; (use-package elpy
+      ;;   :ensure t
+      ;;   :init
+      ;;   (progn
+      ;;     (setq elpy-rpc-python-command "python3")
+      ;;     (elpy-enable)))
 
-     (use-package jedi-core
-       :ensure t)
+    ;;   (use-package jedi-core
+    ;;     :ensure t)
 
 
-     (use-package company-jedi
-        :ensure t)
+    ;;   (use-package company-jedi
+    ;;      :ensure t)
 
-     (defun my/python-mode-hook ()
-       (add-to-list 'company-backends 'company-jedi))
+    ;;   (defun my/python-mode-hook ()
+    ;;     (add-to-list 'company-backends 'company-jedi))
 
-     (add-hook 'python-mode-hook 'my/python-mode-hook)
+    ;;   (add-hook 'python-mode-hook 'my/python-mode-hook)
 
-   (defun uv-activate ()
-     "Activate Python environment managed by uv based on current project directory.
-   Looks for .venv directory in project root and activates the Python interpreter."
-     (interactive)
-     (let* ((project-root (project-root (project-current t)))
-            (venv-path (expand-file-name ".venv" project-root))
-            (python-path (expand-file-name
-                          (if (eq system-type 'windows-nt)
-                              "Scripts/python.exe"
-                            "bin/python")
-                          venv-path)))
-       (if (file-exists-p python-path)
-           (progn
-             ;; Set Python interpreter path
-             (setq python-shell-interpreter python-path)
+     (defun uv-activate ()
+      "Activate Python environment managed by uv based on current project directory.
+    Looks for .venv directory in project root and activates the Python interpreter."
+      (interactive)
+      (let* ((project-root (project-root (project-current t)))
+             (venv-path (expand-file-name ".venv" project-root))
+             (python-path (expand-file-name
+                           (if (eq system-type 'windows-nt)
+                               "Scripts/python.exe"
+                             "bin/python")
+                           venv-path)))
+        (if (file-exists-p python-path)
+            (progn
+              ;; Set Python interpreter path
+              (setq python-shell-interpreter python-path)
 
-             ;; Update exec-path to include the venv's bin directory
-             (let ((venv-bin-dir (file-name-directory python-path)))
-               (setq exec-path (cons venv-bin-dir
-                                     (remove venv-bin-dir exec-path))))
+              ;; Update exec-path to include the venv's bin directory
+              (let ((venv-bin-dir (file-name-directory python-path)))
+                (setq exec-path (cons venv-bin-dir
+                                      (remove venv-bin-dir exec-path))))
 
-             ;; Update PATH environment variable
-             (setenv "PATH" (concat (file-name-directory python-path)
-                                    path-separator
-                                    (getenv "PATH")))
+              ;; Update PATH environment variable
+              (setenv "PATH" (concat (file-name-directory python-path)
+                                     path-separator
+                                     (getenv "PATH")))
 
-             ;; Update VIRTUAL_ENV environment variable
-             (setenv "VIRTUAL_ENV" venv-path)
+              ;; Update VIRTUAL_ENV environment variable
+              (setenv "VIRTUAL_ENV" venv-path)
 
-             ;; Remove PYTHONHOME if it exists
-             (setenv "PYTHONHOME" nil)
+              ;; Remove PYTHONHOME if it exists
+              (setenv "PYTHONHOME" nil)
 
-             (message "Activated UV Python environment at %s" venv-path))
-         (error "No UV Python environment found in %s" project-root))))
+              (message "Activated UV Python environment at %s" venv-path))
+          (error "No UV Python environment found in %s" project-root))))
 
 #+END_SRC
 
