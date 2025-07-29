@@ -773,8 +773,8 @@
       (setenv "PATH" (concat (getenv "PATH") ":/Users/mathieu.corbin/Library/Python/3.13/bin/"))
       (setq exec-path (append exec-path '("/Users/mathieu.corbin/Library/Python/3.13/bin/"))))
    (progn
-      (setenv "PATH" (concat (getenv "PATH") ":/Users/mathieu.corbin/Library/Python/3.13/bin/"))
-      (setq exec-path (append exec-path '("/Users/mathieu.corbin/Library/Python/3.13/bin/")))))
+      (setenv "PATH" (concat (getenv "PATH") ":~/.local/bin"))
+      (setq exec-path (append exec-path '("~/.local/bin")))))
 
      (defun uv-activate ()
       "Activate Python environment managed by uv based on current project directory.
