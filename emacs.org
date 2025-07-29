@@ -360,6 +360,11 @@
 
 ** selectrum and contuls
    #+BEGIN_SRC emacs-lisp
+     (defun projectile-current-buffer-name ()
+      (interactive)
+      (string-remove-prefix (projectile-project-root)
+                            (buffer-name)))
+
       (use-package selectrum-prescient
         :config
         (prescient-persist-mode +1))
@@ -709,7 +714,7 @@
 ** Python
 #+BEGIN_SRC emacs-lisp
 
-      ;; pip install --user --upgrade pyflakes rope mccabe pycodestyle yapf flake8 pylint jedi black 'python-lsp-server[all]'
+      ;; pip install --user --upgrade pyflakes rope mccabe pycodestyle yapf flake8 pylint jedi black 'python-lsp-server[all]' ruff
 
   ;; pip install 'python-lsp-server[all]'
   ;; pip install pylsp-mypy
@@ -742,15 +747,35 @@
 
     ;;   (add-hook 'python-mode-hook 'my/python-mode-hook)
 
-     (setq lsp-pylsp-plugins-black-enabled 't)
+
+
+    (setq lsp-pylsp-plugins-rope-autoimport-code-actions-enabled 't)
+    (setq lsp-pylsp-plugins-rope-autoimport-completions-enabled 't)
+    (setq lsp-pylsp-plugins-rope-autoimport-enabled 't)
+    (setq lsp-pylsp-plugins-rope-autoimport-memory 't)
+    (setq lsp-pylsp-plugins-rope-completion-enabled 't)
+    (setq lsp-pylsp-plugins-mccabe-enabled 't)
+    (setq lsp-pylsp-plugins-pycodestyle-enabled 't)
+    (setq lsp-pylsp-plugins-yapf-enabled 't)
+    (setq lsp-pylsp-plugins-flake8-enabled 'f)
+    (setq lsp-pylsp-plugins-pylint-enabled 'f)
+    (setq lsp-pylsp-plugins-jedi-enabled 't)
+    (setq lsp-pylsp-plugins-black-enabled 'f)
+    (setq lsp-pylsp-plugins-mypy-enabled 't)
+    (setq lsp-pylsp-plugins-ruff-enabled 't)
 
     (use-package pyvenv
       :config
       (pyvenv-mode 1))
 
-    (setenv "PATH" (concat (getenv "PATH") ":~/.local/bin"))
-    (setq exec-path (append exec-path '("~/.local/bin")))
-  
+  (if (string= system-type "darwin")
+   (progn
+      (setenv "PATH" (concat (getenv "PATH") ":/Users/mathieu.corbin/Library/Python/3.13/bin/"))
+      (setq exec-path (append exec-path '("/Users/mathieu.corbin/Library/Python/3.13/bin/"))))
+   (progn
+      (setenv "PATH" (concat (getenv "PATH") ":/Users/mathieu.corbin/Library/Python/3.13/bin/"))
+      (setq exec-path (append exec-path '("/Users/mathieu.corbin/Library/Python/3.13/bin/")))))
+
      (defun uv-activate ()
       "Activate Python environment managed by uv based on current project directory.
     Looks for .venv directory in project root and activates the Python interpreter."
@@ -827,10 +852,11 @@ Add go-mode
 
   (if (string= system-type "darwin")
     (progn
-        (setenv "GOPATH" "/Users/mathieucorbin/go")
-        (setenv "PATH" (concat (getenv "PATH") ":/Users/mathieucorbin/go/bin:/usr/local/go/bin"))
+        (setenv "GOPATH" "/Users/mathieu.corbin/go")
+        (setenv "PATH" (concat (getenv "PATH") ":/Users/mathieu.corbin/go/bin:/usr/local/go/bin"))
         (setenv "PATH" (concat (getenv "PATH") ":/usr/local/bin"))
-        (setq exec-path (append exec-path '("/Users/mathieucorbin/go/bin"))))
+        (setenv "PATH" (concat (getenv "PATH") "://opt/homebrew/bin"))
+        (setq exec-path (append exec-path '("/Users/mathieu.corbin/go/bin"))))
     (progn
       (setenv "GOPATH" "/home/mcorbin/go")
       (setenv "PATH" (concat (getenv "PATH") ":/home/mcorbin/go/bin:/usr/local/go/bin"))
